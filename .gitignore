@@ -1,0 +1,19 @@
+# OS
+.DS_Store
+
+# Build folders
+build/
+dist/
+libs/
+
+# Python
+*.pyc
+*.egg-info
+*.egg
+.eggs
+.venv
+.pytest_cache
+__pycache__
+
+*flickr-rsync.token
+decks/

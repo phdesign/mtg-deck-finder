@@ -1,7 +1,7 @@
 import collections
 import re
 
-DeckEntry = collections.namedtuple('DeckEntry', 'count name')
+DeckEntry = collections.namedtuple('DeckEntry', ['count', 'name'])
 
 class Deck(list):
     pass

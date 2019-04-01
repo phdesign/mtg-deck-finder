@@ -1,4 +1,5 @@
 from functools import reduce
+import itertools
 import collections
 from .deck import DeckReader
 from .config import Config
@@ -35,20 +36,16 @@ Similarity: 10%
         'needed': 'Needed'
     }
     rows = [{**c._asdict(), 'needed': c.deck_count - c.inventory_count} for c in cards]
-    # print([header, *rows])
-    widths = reduce(lambda acc, card: {
-        'name': max(acc['name'], len(card['name'])),
-        'deck_count': max(acc['deck_count'], len(str(card['deck_count']))),
-        'inventory_count': max(acc['inventory_count'], len(str(card['inventory_count']))),
-        'needed': max(acc['needed'], len(str(card['needed'])))
-    }, [header, *rows], {
-        'name': 0,
-        'deck_count': 0,
-        'inventory_count': 0,
-        'needed': 0
-    })
-    template = "{{name:{name}}}  {{deck_count:{deck_count}}}  {{inventory_count:{inventory_count}}}  {{needed:{needed}}}" \
-        .format(**widths)
+    col_lengths = ((len(str(v)) for v in card.values()) for card in [header, *rows])
+    widths = map(max, zip(*col_lengths))
+    # widths = reduce(lambda acc, card: [
+        # max(acc[0], len(card['name'])),
+        # max(acc[1], len(str(card['deck_count']))),
+        # max(acc[2], len(str(card['inventory_count']))),
+        # max(acc[3], len(str(card['needed'])))
+    # ], [header, *rows], [0, 0, 0, 0])
+    template = "{{name:{0}}}  {{deck_count:{1}}}  {{inventory_count:{2}}}  {{needed:{3}}}" \
+        .format(*widths)
 
     print('-' * 6)
     print(template.format(**header))

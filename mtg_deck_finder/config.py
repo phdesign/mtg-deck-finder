@@ -19,3 +19,9 @@ class Config:
         parser.add_argument('deck', nargs='?', type=argparse.FileType('r'), default=sys.stdin,
                             help="deck to compare against inventory")
         self._args = parser.parse_args()
+
+        # Check that we're not waiting on the user to provide stdin input
+        if self._args.deck.isatty():
+            parser.print_help()
+            print('\nerror: no deck file provided', file=sys.stderr)
+            sys.exit(2)

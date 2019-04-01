@@ -16,7 +16,8 @@ def compare(deck, inventory):
 
 def calc_similarity(cards):
     matching_count = sum(c.inventory_count for c in cards)
-    return round((matching_count / len(cards)) * 100, 2)
+    deck_count = sum(c.deck_count for c in cards)
+    return round((matching_count / deck_count) * 100, 2)
 
 def print_percent(cards):
     print(calc_similarity(cards))
@@ -38,7 +39,7 @@ Similarity: 10%
         'inventory_count': 'Inventory Count',
         'needed': 'Needed'
     }
-    rows = [{**c._asdict(), 'needed': c.deck_count - c.inventory_count} for c in cards]
+    rows = [{**c._asdict(), 'needed': max(c.deck_count - c.inventory_count, 0)} for c in cards]
     totals = reduce(lambda acc, c: {
         'name': 'Total',
         'deck_count': acc['deck_count'] + c['deck_count'],

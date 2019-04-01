@@ -14,9 +14,12 @@ def compare(deck, inventory):
     ) for e in deck]
     return cards
 
-def print_percent(cards):
+def calc_similarity(cards):
     matching_count = sum(c.inventory_count for c in cards)
-    print(round((matching_count / len(cards)) * 100, 2))
+    return round((matching_count / len(cards)) * 100, 2)
+
+def print_percent(cards):
+    print(calc_similarity(cards))
 
 def print_table(cards):
     """
@@ -36,23 +39,27 @@ Similarity: 10%
         'needed': 'Needed'
     }
     rows = [{**c._asdict(), 'needed': c.deck_count - c.inventory_count} for c in cards]
+    totals = reduce(lambda acc, c: {
+        'name': 'Total',
+        'deck_count': acc['deck_count'] + c['deck_count'],
+        'inventory_count': acc['inventory_count'] + c['inventory_count'],
+        'needed': acc['needed'] + c['needed']
+    }, rows)
     col_lengths = ((len(str(v)) for v in card.values()) for card in [header, *rows])
-    widths = map(max, zip(*col_lengths))
-    # widths = reduce(lambda acc, card: [
-        # max(acc[0], len(card['name'])),
-        # max(acc[1], len(str(card['deck_count']))),
-        # max(acc[2], len(str(card['inventory_count']))),
-        # max(acc[3], len(str(card['needed'])))
-    # ], [header, *rows], [0, 0, 0, 0])
+    widths = list(map(max, zip(*col_lengths)))
     template = "{{name:{0}}}  {{deck_count:{1}}}  {{inventory_count:{2}}}  {{needed:{3}}}" \
         .format(*widths)
+    line_length = sum(widths) + 6
+    separator = '-' * line_length
 
-    print('-' * 6)
+    print(separator)
     print(template.format(**header))
-    print('-' * 6)
+    print(separator)
     for row in rows:
         print(template.format(**row))
-    print('-' * 6)
+    print(separator)
+    print(template.format(**totals))
+    print("Similarity: {0}%".format(calc_similarity(cards)))
 
 def main():
     config = Config()

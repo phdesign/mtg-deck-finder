@@ -1,18 +1,7 @@
+import collections
 import re
 
-class DeckEntry:
-    def __init__(self, name, count=1):
-        self.name = name
-        self.count = count
-        
-    def __repr__(self):
-        return f"DeckEntry(count='{self.count}', name='{self.name}')"
-
-    def __hash__(self):
-        return hash(self.name)
-
-    def __eq__(self, other):
-        return self.name == other.name
+DeckEntry = collections.namedtuple('DeckEntry', 'count name')
 
 class Deck(list):
     pass
@@ -34,7 +23,7 @@ class TextDeckReader:
 
     def _read_line(self, line):
         match = re.search(r"^(\d+) (.*)$", line)
-        self.deck.append(DeckEntry(count=match.group(1), name=match.group(2)))
+        self.deck.append(DeckEntry(count=int(match.group(1)), name=match.group(2)))
 
 class ApprenticeDeckReader:
     section_pattern = re.compile(r"^\[(.*)\]$", re.M)
@@ -61,7 +50,7 @@ class ApprenticeDeckReader:
 
         if self.current_section == 'main':
             match = self.entry_pattern.search(line)
-            self.deck.append(DeckEntry(count=match.group(1), name=match.group(2)))
+            self.deck.append(DeckEntry(count=int(match.group(1)), name=match.group(2)))
 
 class DeckReader:
     def __init__(self, deck_str):

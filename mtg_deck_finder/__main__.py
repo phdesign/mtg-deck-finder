@@ -1,7 +1,20 @@
 from .config import Config
+import collections
 from .deck import DeckReader, DeckEntry
 
+ComparisonEntry = collections.namedtuple('ComparisonEntry', 'name deck_count, inventory_count')
+
 def compare(deck, inventory):
+    """
+---------------------------------------------------
+Card         Deck Count   Inventory Count   Needed
+---------------------------------------------------
+Arena        4            2                 2
+Werebear     1            0                 1
+---------------------------------------------------
+Total        60           2                 3
+Similarity: 10%
+    """
     deck_count = 0
     missing_cards = []
     too_few_cards = []

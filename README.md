@@ -34,5 +34,5 @@ python -m mtg_deck_finder -i deck.dec -o json inventory.txt
 Process a folder of decks
 
 ```
-find decks/forge-net-decks-2018-10-04/ -iname *.dck -exec python3 -m mtg_deck_finder -i decks/inventory.txt -o percent "{}" \;
+find decks -iname *.dck -print -exec python3 -m mtg_deck_finder -i decks/inventory.txt -o percent "{}" \;
 ```

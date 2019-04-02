@@ -1,11 +1,11 @@
-import os
+import sys
 import json
 from functools import reduce
 import collections
 from .deck import DeckReader
 from .config import Config
 
-Comparison = collections.namedtuple('Comparison', ['deck_name', 'cards', 'total', 'similarity'])
+Comparison = collections.namedtuple('Comparison', ['cards', 'total', 'similarity'])
 
 def compare(deck, inventory):
     cards = [{**c, 'needed': max(c['deck_count'] - c['inventory_count'], 0)} for c in ({
@@ -23,14 +23,13 @@ def compare(deck, inventory):
     deck_count = sum(c['deck_count'] for c in cards)
     similarity = round((matching_count / deck_count) * 100, 2)
     return Comparison(
-        deck_name=deck.path,
         cards=cards,
         total=totals,
         similarity=similarity
     )
 
 def print_percent(comparison):
-    print("{0} {1}".format(comparison.similarity, comparison.deck_name))
+    print(comparison.similarity)
 
 def print_table(comparison):
     """ Prints a table based view of the results, e.g.
@@ -56,7 +55,6 @@ Similarity: 10%
     line_length = sum(widths) + 6
     separator = '-' * line_length
 
-    print(comparison.deck_name)
     print(separator)
     print(template.format(**header))
     print(separator)

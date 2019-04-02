@@ -16,10 +16,10 @@ def compare(deck, inventory):
     totals = reduce(lambda acc, c: {
         'name': 'Total',
         'deck_count': acc['deck_count'] + c['deck_count'],
-        'inventory_count': acc['inventory_count'] + c['inventory_count'],
+        'inventory_count': "",
         'needed': acc['needed'] + c['needed']
     }, cards)
-    matching_count = sum(c['inventory_count'] for c in cards)
+    matching_count = totals['deck_count'] - totals['needed']
     deck_count = sum(c['deck_count'] for c in cards)
     similarity = round((matching_count / deck_count) * 100, 2)
     return Comparison(

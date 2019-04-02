@@ -29,7 +29,7 @@ class TextDeckReader:
 
 class ApprenticeDeckReader:
     section_pattern = re.compile(r"^\[(.*)\]$", re.M)
-    entry_pattern = re.compile(r"^(\d+) (.*)$", re.M)
+    entry_pattern = re.compile(r"^(\d+) (.*?)(\|.*)?$", re.M)
 
     def __init__(self, deck_str, path):
         self.deck_str = deck_str
@@ -47,7 +47,7 @@ class ApprenticeDeckReader:
     def _read_line(self, line):
         match = self.section_pattern.search(line)
         if match:
-            self.current_section = match.group(1)
+            self.current_section = match.group(1).lower()
             return
 
         if self.current_section == 'main':

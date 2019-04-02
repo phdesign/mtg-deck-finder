@@ -7,7 +7,7 @@ from .config import Config
 
 Comparison = collections.namedtuple('Comparison', ['deck_name', 'cards', 'total', 'similarity'])
 
-def compare(deck_name, deck, inventory):
+def compare(deck, inventory):
     cards = [{**c, 'needed': max(c['deck_count'] - c['inventory_count'], 0)} for c in ({
         'name': e.name,
         'deck_count': e.count,
@@ -23,14 +23,14 @@ def compare(deck_name, deck, inventory):
     deck_count = sum(c['deck_count'] for c in cards)
     similarity = round((matching_count / deck_count) * 100, 2)
     return Comparison(
-        deck_name=deck_name,
+        deck_name=deck.path,
         cards=cards,
         total=totals,
         similarity=similarity
     )
 
 def print_percent(comparison):
-    print(comparison.similarity)
+    print("{0} {1}".format(comparison.similarity, comparison.deck_name))
 
 def print_table(comparison):
     """ Prints a table based view of the results, e.g.
@@ -77,10 +77,9 @@ def main():
     config.deck.close()
     config.inventory.close()
 
-    deck = DeckReader(deck_str).read()
+    deck = DeckReader(deck_str, config.deck.name).read()
     inventory = DeckReader(inventory_str).read()
-    deck_name = os.path.basename(config.deck.name)
-    comparison = compare(deck_name, deck, inventory)
+    comparison = compare(deck, inventory)
 
     if config.output_format == config.FORMAT_TABLE:
         print_table(comparison)

@@ -22,7 +22,7 @@ class Config:
                             help='output format, "table", "json" or "percent"')
         parser.add_argument('-i', '--inventory', required=True, type=argparse.FileType('r'),
                             help="inventory file of mtg cards available")
-        parser.add_argument('deck', nargs='?', type=argparse.FileType('r'), default=sys.stdin,
+        parser.add_argument('deck', nargs='?', type=argparse.FileType('r', errors='ignore'), default=sys.stdin,
                             help="deck to compare against inventory")
         self._args = parser.parse_args()
 

@@ -86,12 +86,7 @@ def print_json(comparison):
 def main():
     config = Config()
 
-    # TODO: Use `open(filename, errors='ignore')` to load file if we can
-    try:
-        deck_str = config.deck.read()
-    except UnicodeDecodeError:
-        print("unable to read file \"{0}\"".format(config.deck.name), file=sys.stderr)
-        exit(1)
+    deck_str = config.deck.read()
     inventory_str = config.inventory.read()
     config.deck.close()
     config.inventory.close()

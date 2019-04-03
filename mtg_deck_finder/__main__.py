@@ -21,12 +21,28 @@ def compare(deck, inventory):
     }, cards)
     matching_count = totals['deck_count'] - totals['needed']
     deck_count = sum(c['deck_count'] for c in cards)
-    similarity = round((matching_count / deck_count) * 100, 2)
+    similarity = calc_similarity(cards)
     return Comparison(
         cards=cards,
         total=totals,
         similarity=similarity
     )
+
+def calc_similarity(cards):
+    """Calculate similarity, using an 80 / 20 rule.
+
+    80% of the score goes to number of uniquely matched cards.
+    20% of the score goes to duplicate matched cards.
+    """
+    unique_matches = sum(1 for c in cards if c['inventory_count'] > 0)
+    unique_cards = len(cards)
+    unique_score = unique_matches / unique_cards
+
+    full_matches = sum(c['deck_count'] - c['needed'] for c in cards)
+    deck_count = sum(c['deck_count'] for c in cards)
+    full_score = full_matches / deck_count
+
+    return round((unique_score * 0.8 + full_score * 0.2) * 100, 2)
 
 def print_percent(comparison):
     print(comparison.similarity)
@@ -70,7 +86,12 @@ def print_json(comparison):
 def main():
     config = Config()
 
-    deck_str = config.deck.read()
+    # TODO: Use `open(filename, errors='ignore')` to load file if we can
+    try:
+        deck_str = config.deck.read()
+    except UnicodeDecodeError:
+        print("unable to read file \"{0}\"".format(config.deck.name), file=sys.stderr)
+        exit(1)
     inventory_str = config.inventory.read()
     config.deck.close()
     config.inventory.close()

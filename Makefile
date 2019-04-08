@@ -22,7 +22,7 @@ init:
 
 spider:
 	@test -d $(VENV_NAME) && source $(VENV_ACTIVATE); \
-	scrapy runspider mtgtop8.py
+	scrapy runspider deck_spider/mtgtop8.py
 
 clean:
 	rm -rf .venv

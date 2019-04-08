@@ -29,11 +29,11 @@ class MtgTop8Spider(scrapy.Spider):
 
     def parse_card(self, response):
         download = response.css('.Nav_link a')[0]
-        yield response.follow(download, callback=self.parse_download)
+        yield response.follow(download, callback=self.parse)
 
-    def parse_download(self, response):
+    def parse(self, response):
         filename = parse_qs(urlparse(response.url).query).get("f")[0] + '.txt'
-        filepath = os.path.join('download', filename)
+        filepath = os.path.join('decks', self.name, filename)
         if not os.path.exists(os.path.dirname(filepath)):
             os.makedirs(os.path.dirname(filepath), exist_ok=True)
         with open(filepath, 'wb') as f:

@@ -1,5 +1,6 @@
 import collections
 import re
+from abc import abstractmethod
 
 DeckEntry = collections.namedtuple('DeckEntry', ['count', 'name'])
 
@@ -8,11 +9,23 @@ class Deck(list):
         super().__init__()
         self.path = path
 
-class TextDeckReader:
-    entry_pattern = re.compile(r"^(\d+) (.*)$", re.M)
+class DeckReaderBase:
+    @abstractmethod
+    def can_read(self):
+        pass
+
+    @abstractmethod
+    def read(self):
+        pass
+
+
+class TextDeckReader(DeckReaderBase):
+    section_pattern = re.compile(r"^([A-Za-z]+)$", re.M)
+    entry_pattern = re.compile(r"^(\d+) (.+)$", re.M)
 
     def __init__(self, deck_str, path):
         self.deck_str = deck_str
+        self.current_section = 'main'
         self.deck = Deck(path)
 
     def can_read(self):
@@ -24,11 +37,17 @@ class TextDeckReader:
         return self.deck
 
     def _read_line(self, line):
-        match = re.search(r"^(\d+) (.*)$", line)
-        self.deck.append(DeckEntry(count=int(match.group(1)), name=match.group(2)))
+        match = self.section_pattern.search(line)
+        if match:
+            self.current_section = match.group(1).lower()
+            return
 
-class ApprenticeDeckReader:
-    section_pattern = re.compile(r"^\[(.*)\]$", re.M)
+        if self.current_section == 'main':
+            match = self.entry_pattern.search(line)
+            self.deck.append(DeckEntry(count=int(match.group(1)), name=match.group(2)))
+
+class ApprenticeDeckReader(DeckReaderBase):
+    section_pattern = re.compile(r"^\[(.+)\]$", re.M)
     entry_pattern = re.compile(r"^(\d+) (.*?)(\|.*)?$", re.M)
 
     def __init__(self, deck_str, path):

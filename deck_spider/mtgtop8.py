@@ -6,13 +6,13 @@ import scrapy
 class MtgTop8Spider(scrapy.Spider):
     name = 'mtgtop8'
 
-    custom_settings = {
-        'EXTENSIONS': {
-            'scrapy.extensions.closespider.CloseSpider': 500
-        },
-        'CLOSESPIDER_ITEMCOUNT': 5,
-        'CONCURRENT_REQUESTS': 1
-    }
+    # custom_settings = {
+        # 'EXTENSIONS': {
+            # 'scrapy.extensions.closespider.CloseSpider': 500
+        # },
+        # 'CLOSESPIDER_PAGECOUNT': 20,
+        # 'CONCURRENT_REQUESTS': 1
+    # }
 
     def start_requests(self):
         yield scrapy.Request(url='http://www.mtgtop8.com/search', callback=self.parse_search)
@@ -25,15 +25,16 @@ class MtgTop8Spider(scrapy.Spider):
             .re(r"PageSubmit\((\d+)\)")
         if next_page_num:
             data = {'current_page': next_page_num[0]}
-            yield scrapy.FormRequest(response.url, formdata=data)
+            yield scrapy.FormRequest(response.url, formdata=data, callback=self.parse_search)
 
     def parse_card(self, response):
         download = response.css('.Nav_link a')[0]
-        yield response.follow(download, callback=self.parse)
+        yield response.follow(download, callback=self.parse_download)
 
-    def parse(self, response):
+    def parse_download(self, response):
         filename = parse_qs(urlparse(response.url).query).get("f")[0] + '.txt'
-        filepath = os.path.join('decks', self.name, filename)
+        base_folder = getattr(self, 'folder', '.')
+        filepath = os.path.join(base_folder, self.name, filename)
         if not os.path.exists(os.path.dirname(filepath)):
             os.makedirs(os.path.dirname(filepath), exist_ok=True)
         with open(filepath, 'wb') as f:

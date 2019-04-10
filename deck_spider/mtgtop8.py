@@ -1,5 +1,4 @@
 import os
-import re
 from urllib.parse import urlparse, parse_qs
 import scrapy
 
@@ -15,9 +14,9 @@ class MtgTop8Spider(scrapy.Spider):
     # }
 
     def start_requests(self):
-        yield scrapy.Request(url='http://www.mtgtop8.com/search', callback=self.parse_search)
+        yield scrapy.Request(url='http://www.mtgtop8.com/search', callback=self.parse)
 
-    def parse_search(self, response):
+    def parse(self, response):
         for deck in response.css('.S11 a'):
             yield response.follow(deck, callback=self.parse_card)
         next_page_num = response \
@@ -25,7 +24,7 @@ class MtgTop8Spider(scrapy.Spider):
             .re(r"PageSubmit\((\d+)\)")
         if next_page_num:
             data = {'current_page': next_page_num[0]}
-            yield scrapy.FormRequest(response.url, formdata=data, callback=self.parse_search)
+            yield scrapy.FormRequest(response.url, formdata=data, callback=self.parse)
 
     def parse_card(self, response):
         download = response.css('.Nav_link a')[0]

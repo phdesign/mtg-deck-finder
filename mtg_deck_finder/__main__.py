@@ -1,8 +1,7 @@
-import sys
 import json
 from functools import reduce
 import collections
-from .deck import DeckReader
+from .deck_reader import DeckReader
 from .config import Config
 
 Comparison = collections.namedtuple('Comparison', ['cards', 'total', 'similarity'])
@@ -19,8 +18,6 @@ def compare(deck, inventory):
         'inventory_count': "",
         'needed': acc['needed'] + c['needed']
     }, cards)
-    matching_count = totals['deck_count'] - totals['needed']
-    deck_count = sum(c['deck_count'] for c in cards)
     similarity = calc_similarity(cards)
     return Comparison(
         cards=cards,

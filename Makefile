@@ -18,7 +18,12 @@ endif
 init:
 	test -d $(VENV_NAME) || $(PYTHON) -m venv $(VENV_NAME)
 	source $(VENV_ACTIVATE); \
+	pip install -r requirements.txt; \
 	pip install -r deck_spider/requirements.txt;
+
+lint:
+	@test -d $(VENV_NAME) && source $(VENV_ACTIVATE); \
+	pylint --exit-zero -f colorized {**,.}/*.py
 
 spider:
 	@test -d $(VENV_NAME) && source $(VENV_ACTIVATE); \
@@ -30,4 +35,4 @@ clean:
 	find . -iname "*.pyc" -delete
 	find . -type d -name "__pycache__" -delete
 
-.PHONY: init spider clean
+.PHONY: init lint spider clean

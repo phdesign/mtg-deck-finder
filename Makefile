@@ -27,7 +27,7 @@ lint:
 
 spider:
 	@test -d $(VENV_NAME) && source $(VENV_ACTIVATE); \
-	scrapy runspider deck_spider/mtgtop8.py -a folder=decks
+	scrapy runspider deck_spider/mtgtop8.py -s JOBDIR=crawls/mtgtop8 -a folder=decks
 
 clean:
 	rm -rf .venv

@@ -12,7 +12,7 @@ class MtgTop8Spider(scrapy.Spider):
         # },
         # 'CLOSESPIDER_PAGECOUNT': 10,
         # 'CONCURRENT_REQUESTS': 1,
-        'DOWNLOAD_DELAY': 0.25,
+        'DOWNLOAD_DELAY': 0.15,
         'DOWNLOADER_MIDDLEWARES': {
             'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
             'scrapy_useragents.downloadermiddlewares.useragents.UserAgentsMiddleware': 500,

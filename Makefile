@@ -30,8 +30,7 @@ spider:
 	scrapy runspider deck_spider/mtgtop8.py -s JOBDIR=crawls/mtgtop8 -a folder=decks
 
 clean:
-	rm -rf .venv
-	rm -rf .pytest_cache
+	rm -rf .pytest_cache .venv
 	find . -iname "*.pyc" -delete
 	find . -type d -name "__pycache__" -delete
 

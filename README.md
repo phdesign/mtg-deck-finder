@@ -37,8 +37,14 @@ Process a folder of decks
 find decks -iname *.dck -print -exec python3 -m mtg_deck_finder -i decks/inventory.txt -o percent "{}" \;
 ```
 
-Try to combine on one line
+One result per line
 
 ```
 find decks -iname '*.txt' -print -exec python3 -m mtg_deck_finder -i decks/inventory.txt -o percent "{}" \; | sed 'N;s/\(.*\)\n\(.*\)/\2 \1/'
+```
+
+Order by similarity
+
+```
+ag --nonumbers '^\d+' mtgtop8_result.txt | sort -r -n | head -n 10
 ```

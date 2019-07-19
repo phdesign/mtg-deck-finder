@@ -88,9 +88,11 @@ def main():
     config.deck.close()
     config.inventory.close()
 
-    deck = DeckReader(deck_str, config.deck.name).read().without_sideboard()
+    deck = DeckReader(deck_str, config.deck.name).read()
     inventory = DeckReader(inventory_str).read()
-    comparison = compare(deck, inventory)
+    normalised_deck = deck.without_sideboard().normalise()
+    normalised_inventory = inventory.normalise()
+    comparison = compare(normalised_deck, normalised_inventory)
 
     if config.output_format == config.FORMAT_TABLE:
         print_table(comparison)

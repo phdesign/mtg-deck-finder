@@ -1,4 +1,4 @@
-# pylint: disable=attribute-defined-outside-init
+import json
 from mtg_deck.deck_reader import DeckReader
 
 MTGTOP8_DECK = """
@@ -32,37 +32,67 @@ Sideboard
 1 Final Revels"""
 
 class TestSimpleDeckReader:
-
-    def setup_method(self):
+    
+    def test_should_read_all_cards(self):
         deck_reader = DeckReader(MTGTOP8_DECK, "sample")
-        self.deck = deck_reader.read()
+        deck = deck_reader.read()
+        assert json.dumps(deck.to_json()) == json.dumps({
+            'name': "sample",
+            'cards': [
+                {"count": 4, "name": "Broken Ambitions", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Reflecting Pool", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Vivid Grove", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Cryptic Command", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Fulminator Mage", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Sunken Ruins", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Vivid Creek", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Mulldrifter", "edition": None, "number": None, "section": "main"},
+                {"count": 3, "name": "Firespout", "edition": None, "number": None, "section": "main"},
+                {"count": 3, "name": "Cloudthresher", "edition": None, "number": None, "section": "main"},
+                {"count": 3, "name": "Forest", "edition": None, "number": None, "section": "main"},
+                {"count": 3, "name": "Fire-Lit Thicket", "edition": None, "number": None, "section": "main"},
+                {"count": 3, "name": "Makeshift Mannequin", "edition": None, "number": None, "section": "main"},
+                {"count": 3, "name": "Mind Spring", "edition": None, "number": None, "section": "main"},
+                {"count": 3, "name": "Island", "edition": None, "number": None, "section": "main"},
+                {"count": 2, "name": "Shriekmaw", "edition": None, "number": None, "section": "main"},
+                {"count": 2, "name": "Austere Command", "edition": None, "number": None, "section": "main"},
+                {"count": 2, "name": "Nameless Inversion", "edition": None, "number": None, "section": "main"},
+                {"count": 1, "name": "Wooded Bastion", "edition": None, "number": None, "section": "main"},
+                {"count": 1, "name": "Firespout", "edition": None, "number": None, "section": "sideboard"},
+                {"count": 1, "name": "Shriekmaw", "edition": None, "number": None, "section": "sideboard"},
+                {"count": 4, "name": "Kitchen Finks", "edition": None, "number": None, "section": "sideboard"},
+                {"count": 2, "name": "Primal Command", "edition": None, "number": None, "section": "sideboard"},
+                {"count": 2, "name": "Mind Shatter", "edition": None, "number": None, "section": "sideboard"},
+                {"count": 2, "name": "Negate", "edition": None, "number": None, "section": "sideboard"},
+                {"count": 2, "name": "Sower of Temptation", "edition": None, "number": None, "section": "sideboard"},
+                {"count": 1, "name": "Final Revels", "edition": None, "number": None, "section": "sideboard"}
+            ]
+        })
 
-    def test_should_return_all_cards(self):
-        assert len(self.deck) == 27
-
-    def test_should_return_card_count(self):
-        assert sum(e.count for e in self.deck) == 75
-
-    def test_should_return_card_in_main_section(self):
-        assert any(e.name == "Vivid Creek" for e in self.deck)
-
-    def test_should_return_card_in_sideboard_section(self):
-        assert any(e.name == "Negate" for e in self.deck)
-
-class TestSimpleDeckReaderWithoutSideboard:
-
-    def setup_method(self):
+    def test_should_read_main_cards_only_when_sideboard_excluded(self):
         deck_reader = DeckReader(MTGTOP8_DECK, "sample")
-        self.deck = deck_reader.read().without_sideboard()
-
-    def test_should_return_all_main_cards_given_sideboard_is_excluded(self):
-        assert len(self.deck) == 19
-
-    def test_should_return_card_count_given_sideboard_is_excluded(self):
-        assert sum(e.count for e in self.deck) == 60
-
-    def test_should_return_card_in_main_section_given_sideboard_is_excluded(self):
-        assert any(e.name == "Vivid Creek" for e in self.deck)
-
-    def test_should_not_return_card_in_sideboard_section_given_sideboard_is_excluded(self):
-        assert not any(e.name == "Negate" for e in self.deck)
+        deck = deck_reader.read().without_sideboard()
+        assert json.dumps(deck.to_json()) == json.dumps({
+            'name': "sample",
+            'cards': [
+                {"count": 4, "name": "Broken Ambitions", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Reflecting Pool", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Vivid Grove", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Cryptic Command", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Fulminator Mage", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Sunken Ruins", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Vivid Creek", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Mulldrifter", "edition": None, "number": None, "section": "main"},
+                {"count": 3, "name": "Firespout", "edition": None, "number": None, "section": "main"},
+                {"count": 3, "name": "Cloudthresher", "edition": None, "number": None, "section": "main"},
+                {"count": 3, "name": "Forest", "edition": None, "number": None, "section": "main"},
+                {"count": 3, "name": "Fire-Lit Thicket", "edition": None, "number": None, "section": "main"},
+                {"count": 3, "name": "Makeshift Mannequin", "edition": None, "number": None, "section": "main"},
+                {"count": 3, "name": "Mind Spring", "edition": None, "number": None, "section": "main"},
+                {"count": 3, "name": "Island", "edition": None, "number": None, "section": "main"},
+                {"count": 2, "name": "Shriekmaw", "edition": None, "number": None, "section": "main"},
+                {"count": 2, "name": "Austere Command", "edition": None, "number": None, "section": "main"},
+                {"count": 2, "name": "Nameless Inversion", "edition": None, "number": None, "section": "main"},
+                {"count": 1, "name": "Wooded Bastion", "edition": None, "number": None, "section": "main"}
+            ]
+        })

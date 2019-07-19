@@ -1,4 +1,4 @@
-# pylint: disable=attribute-defined-outside-init
+import json
 from mtg_deck.deck_reader import DeckReader
 
 APPRENTICE_DECK = """
@@ -34,36 +34,57 @@ Constructed
 
 class TestApprenticeDeckReader:
 
-    def setup_method(self):
+    def test_should_read_all_cards(self):
         deck_reader = DeckReader(APPRENTICE_DECK, "sample")
-        self.deck = deck_reader.read()
+        deck = deck_reader.read()
+        assert json.dumps(deck.to_json()) == json.dumps({
+            'name': "sample",
+            'cards': [
+                {"count": 4, "name": "Blood Moon", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Desperate Ritual", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Ensnaring Bridge", "edition": None, "number": None, "section": "main"},
+                {"count": 2, "name": "Faithless Looting", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Magus of the Moon", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Molten Rain", "edition": None, "number": None, "section": "main"},
+                {"count": 19, "name": "Mountain", "edition": None, "number": None, "section": "main"},
+                {"count": 1, "name": "Pyretic Ritual", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Simian Spirit Guide", "edition": None, "number": None, "section": "main"},
+                {"count": 1, "name": "Stone Rain", "edition": None, "number": None, "section": "main"},
+                {"count": 1, "name": "Gemstone Caverns", "edition": None, "number": None, "section": "main"},
+                {"count": 2, "name": "Chandra, Pyromaster", "edition": None, "number": None, "section": "main"},
+                {"count": 2, "name": "Anger of the Gods", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Chandra, Torch of Defiance", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Blood Sun", "edition": None, "number": None, "section": "main"},
+                {"count": 2, "name": "Pithing Needle", "edition": None, "number": None, "section": "sideboard"},
+                {"count": 3, "name": "Relic of Progenitus", "edition": None, "number": None, "section": "sideboard"},
+                {"count": 1, "name": "Stone Rain", "edition": None, "number": None, "section": "sideboard"},
+                {"count": 1, "name": "Thundermaw Hellkite", "edition": None, "number": None, "section": "sideboard"},
+                {"count": 4, "name": "Trinisphere", "edition": None, "number": None, "section": "sideboard"},
+                {"count": 2, "name": "Anger of the Gods", "edition": None, "number": None, "section": "sideboard"},
+                {"count": 2, "name": "Abrade", "edition": None, "number": None, "section": "sideboard"}
+            ]
+        })
 
-    def test_should_return_all_cards(self):
-        assert len(self.deck) == 22
-
-    def test_should_return_card_count(self):
-        assert sum(e.count for e in self.deck) == 75
-
-    def test_should_return_card_in_main_section(self):
-        assert any(e.name == "Anger of the Gods" for e in self.deck)
-
-    def test_should_return_card_in_sideboard_section(self):
-        assert any(e.name == "Trinisphere" for e in self.deck)
-
-class TestApprenticeDeckReaderWithoutSideboard:
-
-    def setup_method(self):
+    def test_should_read_main_cards_only_when_sideboard_excluded(self):
         deck_reader = DeckReader(APPRENTICE_DECK, "sample")
-        self.deck = deck_reader.read().without_sideboard()
-
-    def test_should_return_all_main_cards_given_sideboard_is_excluded(self):
-        assert len(self.deck) == 15
-
-    def test_should_return_card_count_given_sideboard_is_excluded(self):
-        assert sum(e.count for e in self.deck) == 60
-
-    def test_should_return_card_in_main_section_given_sideboard_is_excluded(self):
-        assert any(e.name == "Anger of the Gods" for e in self.deck)
-
-    def test_should_not_return_card_in_sideboard_section_given_sideboard_is_excluded(self):
-        assert not any(e.name == "Trinisphere" for e in self.deck)
+        deck = deck_reader.read().without_sideboard()
+        assert json.dumps(deck.to_json()) == json.dumps({
+            'name': "sample",
+            'cards': [
+                {"count": 4, "name": "Blood Moon", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Desperate Ritual", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Ensnaring Bridge", "edition": None, "number": None, "section": "main"},
+                {"count": 2, "name": "Faithless Looting", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Magus of the Moon", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Molten Rain", "edition": None, "number": None, "section": "main"},
+                {"count": 19, "name": "Mountain", "edition": None, "number": None, "section": "main"},
+                {"count": 1, "name": "Pyretic Ritual", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Simian Spirit Guide", "edition": None, "number": None, "section": "main"},
+                {"count": 1, "name": "Stone Rain", "edition": None, "number": None, "section": "main"},
+                {"count": 1, "name": "Gemstone Caverns", "edition": None, "number": None, "section": "main"},
+                {"count": 2, "name": "Chandra, Pyromaster", "edition": None, "number": None, "section": "main"},
+                {"count": 2, "name": "Anger of the Gods", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Chandra, Torch of Defiance", "edition": None, "number": None, "section": "main"},
+                {"count": 4, "name": "Blood Sun", "edition": None, "number": None, "section": "main"}
+            ]
+        })

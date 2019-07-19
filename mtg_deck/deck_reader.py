@@ -15,9 +15,9 @@ class PatternDeckReader(DeckReaderBase):
     section_pattern = None
     entry_pattern = None
 
-    def __init__(self, deck_str, path):
+    def __init__(self, deck_str, name):
         self.deck_str = deck_str
-        self.deck = Deck(path)
+        self.deck = Deck(name)
         self.current_section = None
 
     @abstractmethod
@@ -35,16 +35,20 @@ class PatternDeckReader(DeckReaderBase):
             self.current_section = match.group(1).lower()
             return
 
-        if self.current_section == 'main':
-            match = self.entry_pattern.search(line)
-            self.deck.append(DeckEntry(count=int(match.group(1)), name=match.group(2)))
+        match = self.entry_pattern.search(line)
+        if match:
+            entry = DeckEntry(
+                count=int(match.group(1)),
+                name=match.group(2),
+                section=self.current_section)
+            self.deck.append(entry)
 
-class TextDeckReader(PatternDeckReader):
+class SimpleDeckReader(PatternDeckReader):
     section_pattern = re.compile(r"^([A-Za-z]+)$", re.M)
     entry_pattern = re.compile(r"^(\d+) (.+)$", re.M)
 
-    def __init__(self, deck_str, path):
-        super().__init__(deck_str, path)
+    def __init__(self, deck_str, name):
+        super().__init__(deck_str, name)
         self.current_section = 'main'
 
     def can_read(self):
@@ -58,9 +62,9 @@ class ApprenticeDeckReader(PatternDeckReader):
         return self.section_pattern.search(self.deck_str) is not None
 
 class DeckReader:
-    def __init__(self, deck_str, path=None):
-        readers = [ApprenticeDeckReader, TextDeckReader]
-        self.reader = next((r for r in (r(deck_str, path) for r in readers) if r.can_read()), None)
+    def __init__(self, deck_str, name=None):
+        readers = [ApprenticeDeckReader, SimpleDeckReader]
+        self.reader = next((r for r in (r(deck_str, name) for r in readers) if r.can_read()), None)
 
     def read(self):
         if not self.reader:

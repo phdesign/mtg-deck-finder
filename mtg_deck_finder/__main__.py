@@ -1,7 +1,7 @@
 import json
 from functools import reduce
 import collections
-from .deck_reader import DeckReader
+from mtg_deck.deck_reader import DeckReader
 from .config import Config
 
 Comparison = collections.namedtuple('Comparison', ['cards', 'total', 'similarity'])
@@ -88,7 +88,7 @@ def main():
     config.deck.close()
     config.inventory.close()
 
-    deck = DeckReader(deck_str, config.deck.name).read()
+    deck = DeckReader(deck_str, config.deck.name).read().without_sideboard()
     inventory = DeckReader(inventory_str).read()
     comparison = compare(deck, inventory)
 

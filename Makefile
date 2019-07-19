@@ -22,11 +22,15 @@ init:
 	pip install -r deck_spider/requirements.txt;
 
 lint:
-	@test -d $(VENV_NAME) && source $(VENV_ACTIVATE); \
-	pylint --exit-zero -f colorized {**,.}/*.py
+	@source $(VENV_ACTIVATE); \
+	pylint --exit-zero -f colorized **/*.py
+
+test: lint
+	@source $(VENV_ACTIVATE); \
+	pytest tests
 
 spider:
-	@test -d $(VENV_NAME) && source $(VENV_ACTIVATE); \
+	@source $(VENV_ACTIVATE); \
 	scrapy runspider deck_spider/mtgtop8.py -s JOBDIR=crawls/mtgtop8 -a folder=decks
 
 clean:
@@ -34,4 +38,4 @@ clean:
 	find . -iname "*.pyc" -delete
 	find . -type d -name "__pycache__" -delete
 
-.PHONY: init lint spider clean
+.PHONY: init lint test spider clean

@@ -1,3 +1,4 @@
+# pylint: disable=line-too-long
 import os
 import sys
 from urllib.parse import urlparse, parse_qs
@@ -8,7 +9,7 @@ class MtgTop8Spider(scrapy.Spider):
 
     custom_settings = {
         # 'EXTENSIONS': {
-            # 'scrapy.extensions.closespider.CloseSpider': 500
+        #     'scrapy.extensions.closespider.CloseSpider': 500
         # },
         # 'CLOSESPIDER_PAGECOUNT': 10,
         # 'CONCURRENT_REQUESTS': 1,

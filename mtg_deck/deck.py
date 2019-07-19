@@ -6,10 +6,24 @@ class DeckEntry:
         self.number = number
         self.section = section
 
+    def to_json(self):
+        '''
+        Returns a serialised object (not a JSON string!) ready to be passed to json.dumps
+        '''
+        return self.__dict__
+
+
 class Deck(list):
     def __init__(self, name=None):
         super().__init__()
         self.name = name
 
+    
+    def to_json(self):
+        '''
+        Returns a serialised object (not a JSON string!) ready to be passed to json.dumps
+        '''
+        return [e.to_json() for e in self]
+
     def without_sideboard(self):
-        return [e for e in self if e.section.lower() != 'sideboard']
+        return [e for e in self if e.section != 'sideboard']

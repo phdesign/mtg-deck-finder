@@ -14,8 +14,11 @@ class Config:
         parser = argparse.ArgumentParser(
             description="some deck arithmetic", prog=PACKAGE_NAME
         )
-        parser.add_argument("-a", "--add", help="perform addition")
-        parser.add_argument("-s", "--subtract", help="perform subtraction")
+        parser.add_argument("-a", "--add", dest="operation", action="store_const", const="add", default="add", help="perform addition")
+        parser.add_argument("-s", "--subtract", dest="operation", action="store_const", const="subtract", default="add", help="perform subtraction")
+        parser.add_argument(
+            "-o", "--outfile", type=argparse.FileType("w"), default=sys.stdout
+        )
         parser.add_argument(
             "first",
             nargs="?",

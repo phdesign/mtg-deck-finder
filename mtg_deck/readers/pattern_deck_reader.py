@@ -3,6 +3,7 @@ from abc import abstractmethod
 from ..deck import Deck, DeckEntry
 from .deck_reader_base import DeckReaderBase
 
+
 class PatternDeckReader(DeckReaderBase):
     section_pattern = None
     entry_pattern = None
@@ -40,8 +41,10 @@ class PatternDeckReader(DeckReaderBase):
             entry = DeckEntry(
                 count=int(match.group(1)),
                 name=match.group(2),
-                section=self.current_section)
+                section=self.current_section,
+            )
             self.deck.append(entry)
+
 
 class SimpleDeckReader(PatternDeckReader):
     section_pattern = re.compile(r"^([A-Za-z]+)$", re.M)
@@ -49,34 +52,38 @@ class SimpleDeckReader(PatternDeckReader):
 
     def __init__(self, deck_str, name):
         super().__init__(deck_str, name)
-        self.current_section = 'main'
+        self.current_section = "main"
 
     def can_read(self):
         result = any(line for line in self.deckfile if self.entry_pattern.search(line))
         self.deckfile.seek(0)
         return result
 
+
 class ApprenticeDeckReader(PatternDeckReader):
     section_pattern = re.compile(r"^\[(.+)\]$", re.M)
     entry_pattern = re.compile(r"^(\d+) (.*?)(\|.*)?$", re.M)
 
     def can_read(self):
-        result = any(line for line in self.deckfile if self.section_pattern.search(line))
+        result = any(
+            line for line in self.deckfile if self.section_pattern.search(line)
+        )
         self.deckfile.seek(0)
         return result
 
     def _read_line(self, line):
         if self._read_section(line):
             return
-        if (self.current_section in ['main', 'sideboard']):
+        if self.current_section in ["main", "sideboard"]:
             self._read_card(line)
+
 
 class ArenaDeckReader(PatternDeckReader):
     entry_pattern = re.compile(r"^(\d+) ([^(]+) \(([^)]+)\) (\d+)$", re.M)
 
     def __init__(self, deck_str, name):
         super().__init__(deck_str, name)
-        self.current_section = 'main'
+        self.current_section = "main"
 
     def can_read(self):
         result = any(line for line in self.deckfile if self.entry_pattern.search(line))
@@ -91,5 +98,6 @@ class ArenaDeckReader(PatternDeckReader):
                 name=match.group(2),
                 edition=match.group(3),
                 number=int(match.group(4)),
-                section=self.current_section)
+                section=self.current_section,
+            )
             self.deck.append(entry)

@@ -12,7 +12,8 @@
 disable=missing-docstring,
         too-few-public-methods,
         no-self-use,
-        too-many-arguments
+        too-many-arguments,
+        duplicate-code
 
 
 [BASIC]

@@ -1,4 +1,6 @@
 from itertools import groupby
+from functools import reduce
+import operator
 
 
 class DeckEntry:
@@ -35,6 +37,40 @@ class Deck(list):
             (
                 DeckEntry(
                     count=sum(e.count for e in group), name=key[0], section=key[1]
+                )
+                for key, group in groupby(cards, keyfunc)
+            ),
+            name=self.name,
+        )
+
+    def add(self, other):
+        keyfunc = lambda x: (x.name, x.edition, x.number, x.section)
+        cards = sorted(self + other, key=keyfunc)
+        return Deck(
+            (
+                DeckEntry(
+                    count=sum(e.count for e in group),
+                    name=key[0],
+                    edition=key[1],
+                    number=key[2],
+                    section=key[3],
+                )
+                for key, group in groupby(cards, keyfunc)
+            ),
+            name=self.name,
+        )
+
+    def subtract(self, other):
+        keyfunc = lambda x: (x.name, x.edition, x.number, x.section)
+        cards = sorted(self + other, key=keyfunc)
+        return Deck(
+            (
+                DeckEntry(
+                    count=reduce(operator.__sub__, (e.count for e in group)),
+                    name=key[0],
+                    edition=key[1],
+                    number=key[2],
+                    section=key[3],
                 )
                 for key, group in groupby(cards, keyfunc)
             ),

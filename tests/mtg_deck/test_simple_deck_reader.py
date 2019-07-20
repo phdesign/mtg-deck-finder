@@ -1,41 +1,11 @@
 import json
 from mtg_deck.deck_reader import DeckReader
-
-MTGTOP8_DECK = """
-4 Broken Ambitions
-4 Reflecting Pool
-4 Vivid Grove
-4 Cryptic Command
-4 Fulminator Mage
-4 Sunken Ruins
-4 Vivid Creek
-4 Mulldrifter
-3 Firespout
-3 Cloudthresher
-3 Forest
-3 Fire-Lit Thicket
-3 Makeshift Mannequin
-3 Mind Spring
-3 Island
-2 Shriekmaw
-2 Austere Command
-2 Nameless Inversion
-1 Wooded Bastion
-Sideboard
-1 Firespout
-1 Shriekmaw
-4 Kitchen Finks
-2 Primal Command
-2 Mind Shatter
-2 Negate
-2 Sower of Temptation
-1 Final Revels"""
+from .fixtures import MTGTOP8_DECK
 
 class TestSimpleDeckReader:
     
     def test_should_read_all_cards(self):
-        deck_reader = DeckReader(MTGTOP8_DECK, "sample")
-        deck = deck_reader.read()
+        deck = DeckReader(MTGTOP8_DECK, "sample").read()
         assert json.dumps(deck.to_json()) == json.dumps({
             'name': "sample",
             'cards': [
@@ -70,8 +40,7 @@ class TestSimpleDeckReader:
         })
 
     def test_should_read_main_cards_only_when_sideboard_excluded(self):
-        deck_reader = DeckReader(MTGTOP8_DECK, "sample")
-        deck = deck_reader.read().without_sideboard()
+        deck = DeckReader(MTGTOP8_DECK, "sample").read().without_sideboard()
         assert json.dumps(deck.to_json()) == json.dumps({
             'name': "sample",
             'cards': [

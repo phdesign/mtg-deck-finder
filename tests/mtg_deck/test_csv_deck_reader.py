@@ -1,26 +1,30 @@
 import json
+from mtg_deck.readers.csv_deck_reader import CsvDeckReader
 from mtg_deck.deck_reader import DeckReader
-
-CSV_DECK = """
-Count,Tradelist Count,Name,Edition,Card Number,Condition,Language,Foil,Signed,Artist Proof,Altered Art,Misprint,Promo,Textless,My Price
-2,0,Abomination of Gudul,Khans of Tarkir,159,Near Mint,English,,,,,,,,
-2,0,Abzan Banner,Khans of Tarkir,215,Near Mint,English,,,,,,,,
-1,0,Abzan Falconer,Khans of Tarkir,2,Near Mint,English,,,,,,,,0
-2,0,Academy Drake,Dominaria,40,Near Mint,English,,,,,,,,
-3,0,Academy Journeymage,Dominaria,41,Near Mint,English,,,,,,,,
-1,0,Accumulated Knowledge,Masters 25,40,Near Mint,English,,,,,,,,
-1,0,Acid-Spewer Dragon,Dragons of Tarkir,86,Near Mint,English,,,,,,,,
-2,0,Act of Treason,Khans of Tarkir,95,Near Mint,English,,,,,,,,0
-1,0,Adamant Will,Dominaria,2,Near Mint,English,,,,,,,,"""
+from .fixtures import CSV_DECK, MTGTOP8_DECK
 
 class TestCsvDeckReader:
-
-    def test_should_read_all_cards(self):
-        deck_reader = DeckReader(CSV_DECK, "sample")
-        deck = deck_reader.read()
+    def test_should_read_all_cards_given_valid_csv(self):
+        deck = DeckReader(CSV_DECK, "sample").read()
         assert json.dumps(deck.to_json()) == json.dumps({
             'name': "sample",
             'cards': [
-                { "count": 2, "name": "Abomination of Gudul", "edition": "Khans of Tarkir", "number": 158, "section": "main", },
+                {"count": 2, "name": "Abomination of Gudul", "edition": "Khans of Tarkir", "number": 159, "section": "main"},
+                {"count": 2, "name": "Abzan Banner", "edition": "Khans of Tarkir", "number": 215, "section": "main"},
+                {"count": 1, "name": "Abzan Falconer", "edition": "Khans of Tarkir", "number": 2, "section": "main"},
+                {"count": 2, "name": "Academy Drake", "edition": "Dominaria", "number": 40, "section": "main"},
+                {"count": 3, "name": "Academy Journeymage", "edition": "Dominaria", "number": 41, "section": "main"},
+                {"count": 1, "name": "Accumulated Knowledge", "edition": "Masters 25", "number": 40, "section": "main"},
+                {"count": 1, "name": "Acid-Spewer Dragon", "edition": "Dragons of Tarkir", "number": 86, "section": "main"},
+                {"count": 2, "name": "Act of Treason", "edition": "Khans of Tarkir", "number": 95, "section": "main"},
+                {"count": 1, "name": "Adamant Will", "edition": "Dominaria", "number": 2, "section": "main"}
             ]
         })
+
+    def test_should_be_able_to_read_given_valid_csv(self):
+        can_read = CsvDeckReader(CSV_DECK, "sample").can_read()
+        assert can_read
+
+    def test_should_not_be_able_to_read_given_invalid_csv(self):
+        can_read = CsvDeckReader(MTGTOP8_DECK, "sample").can_read()
+        assert not can_read

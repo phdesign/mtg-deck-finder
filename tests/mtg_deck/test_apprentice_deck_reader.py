@@ -1,42 +1,11 @@
 import json
 from mtg_deck.deck_reader import DeckReader
-
-APPRENTICE_DECK = """
-[metadata]
-Name=SaffronOlive - 12 Moon
-Format=Modern
-[general]
-Constructed
-[main]
-4 Blood Moon
-4 Desperate Ritual
-4 Ensnaring Bridge
-2 Faithless Looting
-4 Magus of the Moon
-4 Molten Rain
-19 Mountain
-1 Pyretic Ritual
-4 Simian Spirit Guide
-1 Stone Rain
-1 Gemstone Caverns
-2 Chandra, Pyromaster
-2 Anger of the Gods
-4 Chandra, Torch of Defiance
-4 Blood Sun
-[sideboard]
-2 Pithing Needle
-3 Relic of Progenitus
-1 Stone Rain
-1 Thundermaw Hellkite
-4 Trinisphere
-2 Anger of the Gods
-2 Abrade"""
+from .fixtures import APPRENTICE_DECK
 
 class TestApprenticeDeckReader:
 
     def test_should_read_all_cards(self):
-        deck_reader = DeckReader(APPRENTICE_DECK, "sample")
-        deck = deck_reader.read()
+        deck = DeckReader(APPRENTICE_DECK, "sample").read()
         assert json.dumps(deck.to_json()) == json.dumps({
             'name': "sample",
             'cards': [
@@ -66,8 +35,7 @@ class TestApprenticeDeckReader:
         })
 
     def test_should_read_main_cards_only_when_sideboard_excluded(self):
-        deck_reader = DeckReader(APPRENTICE_DECK, "sample")
-        deck = deck_reader.read().without_sideboard()
+        deck = DeckReader(APPRENTICE_DECK, "sample").read().without_sideboard()
         assert json.dumps(deck.to_json()) == json.dumps({
             'name': "sample",
             'cards': [

@@ -1,39 +1,11 @@
 import json
 from mtg_deck.deck_reader import DeckReader
-
-ARENA_DECK = """
-1 Bristling Boar (M20) 338
-2 Centaur Courser (M20) 168
-3 Colossal Dreadmaw (M19) 172
-1 Declare Dominance (M19) 175
-10 Forest (M20) 279
-4 Foul Orchard (M19) 251
-1 Ghalta, Primal Hunger (RIX) 130
-1 Gravewaker (M20) 323
-2 Grazing Whiptail (XLN) 190
-1 Greenwood Sentinel (M20) 174
-2 Hitchclaw Recluse (GRN) 133
-2 Impale (RIX) 76
-1 Jungle Creeper (RIX) 161
-3 Llanowar Elves (M19) 314
-2 Moment of Craving (RIX) 79
-1 Pelakka Wurm (M19) 192
-1 Prodigious Growth (M19) 194
-1 Ravenous Chupacabra (RIX) 82
-2 Reclamation Sage (M19) 196
-10 Swamp (M20) 272
-2 Titanic Growth (M20) 343
-2 Ursine Champion (M19) 304
-2 Vampire Sovereign (M19) 125
-1 Verdant Sun's Avatar (XLN) 213
-1 Vigilant Baloth (M19) 206
-1 Walking Corpse (M20) 327"""
+from .fixtures import ARENA_DECK
 
 class TestArenaDeckReader:
 
     def test_should_read_all_cards(self):
-        deck_reader = DeckReader(ARENA_DECK, "sample")
-        deck = deck_reader.read()
+        deck = DeckReader(ARENA_DECK, "sample").read()
         assert json.dumps(deck.to_json()) == json.dumps({
             'name': "sample",
             'cards': [

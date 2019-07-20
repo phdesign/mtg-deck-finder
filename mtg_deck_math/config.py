@@ -11,26 +11,22 @@ class Config:
 
     def __init__(self):
         self._args = None
-        parser = argparse.ArgumentParser(
-            description="some deck arithmetic", prog=PACKAGE_NAME
-        )
-        parser.add_argument("-a", "--add", dest="operation", action="store_const", const="add", default="add", help="perform addition")
-        parser.add_argument("-s", "--subtract", dest="operation", action="store_const", const="subtract", default="add", help="perform subtraction")
+        parser = argparse.ArgumentParser(description="some deck arithmetic", prog=PACKAGE_NAME)
         parser.add_argument(
-            "-o", "--outfile", type=argparse.FileType("w"), default=sys.stdout
+            "-a", "--add", dest="operation", action="store_const", const="add", default="add", help="perform addition"
         )
         parser.add_argument(
-            "first",
-            nargs="?",
-            type=argparse.FileType("r", errors="ignore"),
-            help="first deck",
+            "-s",
+            "--subtract",
+            dest="operation",
+            action="store_const",
+            const="subtract",
+            default="add",
+            help="perform subtraction",
         )
-        parser.add_argument(
-            "second",
-            nargs="?",
-            type=argparse.FileType("r", errors="ignore"),
-            help="first deck",
-        )
+        parser.add_argument("-o", "--outfile", type=argparse.FileType("w"), default=sys.stdout)
+        parser.add_argument("first", nargs="?", type=argparse.FileType("r", errors="ignore"), help="first deck")
+        parser.add_argument("second", nargs="?", type=argparse.FileType("r", errors="ignore"), help="first deck")
         self._args = parser.parse_args()
 
         # Check that we're not waiting on the user to provide stdin input

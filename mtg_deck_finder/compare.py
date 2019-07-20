@@ -12,9 +12,7 @@ def compare(deck, inventory):
             {
                 "name": e.name,
                 "deck_count": e.count,
-                "inventory_count": next(
-                    (i.count for i in inventory if i.name == e.name), 0
-                ),
+                "inventory_count": next((i.count for i in inventory if i.name == e.name), 0),
             }
             for e in deck
         )
@@ -64,20 +62,10 @@ Werebear     1            0                 1
 Total        60           2                 3
 Similarity: 10%
     """
-    header = {
-        "name": "Card",
-        "deck_count": "Deck Count",
-        "inventory_count": "Inventory Count",
-        "needed": "Needed",
-    }
-    col_lengths = (
-        (len(str(v)) for v in card.values())
-        for card in [header, *comparison.cards, comparison.total]
-    )
+    header = {"name": "Card", "deck_count": "Deck Count", "inventory_count": "Inventory Count", "needed": "Needed"}
+    col_lengths = ((len(str(v)) for v in card.values()) for card in [header, *comparison.cards, comparison.total])
     widths = list(map(max, zip(*col_lengths)))
-    template = "{{name:{0}}}  {{deck_count:{1}}}  {{inventory_count:{2}}}  {{needed:{3}}}".format(
-        *widths
-    )
+    template = "{{name:{0}}}  {{deck_count:{1}}}  {{inventory_count:{2}}}  {{needed:{3}}}".format(*widths)
     line_length = sum(widths) + 6
     separator = "-" * line_length
 

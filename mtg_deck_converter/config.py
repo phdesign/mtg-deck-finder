@@ -12,18 +12,10 @@ class Config:
     def __init__(self):
         self._args = None
         parser = argparse.ArgumentParser(
-            description="converts between different magic the gathering deck formats",
-            prog=PACKAGE_NAME,
+            description="converts between different magic the gathering deck formats", prog=PACKAGE_NAME
         )
-        parser.add_argument(
-            "-o", "--outfile", type=argparse.FileType("w"), default=sys.stdout
-        )
-        parser.add_argument(
-            "deck",
-            nargs="?",
-            type=argparse.FileType("r", errors="ignore"),
-            default=sys.stdin,
-        )
+        parser.add_argument("-o", "--outfile", type=argparse.FileType("w"), default=sys.stdout)
+        parser.add_argument("deck", nargs="?", type=argparse.FileType("r", errors="ignore"), default=sys.stdin)
         self._args = parser.parse_args()
 
         # Check that we're not waiting on the user to provide stdin input

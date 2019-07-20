@@ -33,13 +33,7 @@ class TestCsvDeckReader:
                         "number": 2,
                         "section": "main",
                     },
-                    {
-                        "count": 2,
-                        "name": "Academy Drake",
-                        "edition": "Dominaria",
-                        "number": 40,
-                        "section": "main",
-                    },
+                    {"count": 2, "name": "Academy Drake", "edition": "Dominaria", "number": 40, "section": "main"},
                     {
                         "count": 3,
                         "name": "Academy Journeymage",
@@ -68,13 +62,7 @@ class TestCsvDeckReader:
                         "number": 95,
                         "section": "main",
                     },
-                    {
-                        "count": 1,
-                        "name": "Adamant Will",
-                        "edition": "Dominaria",
-                        "number": 2,
-                        "section": "main",
-                    },
+                    {"count": 1, "name": "Adamant Will", "edition": "Dominaria", "number": 2, "section": "main"},
                 ],
             }
         )

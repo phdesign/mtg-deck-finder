@@ -11,7 +11,4 @@ class CsvDeckWriter:
         writer = csv.writer(self.outfile, lineterminator=os.linesep)
 
         writer.writerow(fieldnames)
-        writer.writerows(
-            [item.count, item.name, item.edition, item.number, item.section]
-            for item in deck
-        )
+        writer.writerows([item.count, item.name, item.edition, item.number, item.section] for item in deck)

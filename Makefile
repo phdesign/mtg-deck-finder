@@ -24,7 +24,7 @@ init:
 lint:
 	@source $(VENV_ACTIVATE); \
 	PYFILES=$$(find . -not -path "./.venv*" -iname "*.py"); \
-	black $$PYFILES; \
+	black -l 120 $$PYFILES; \
 	pylint --exit-zero -f colorized $$PYFILES
 
 test: lint

@@ -38,11 +38,7 @@ class PatternDeckReader(DeckReaderBase):
     def _read_card(self, line):
         match = self.entry_pattern.search(line)
         if match:
-            entry = DeckEntry(
-                count=int(match.group(1)),
-                name=match.group(2),
-                section=self.current_section,
-            )
+            entry = DeckEntry(count=int(match.group(1)), name=match.group(2), section=self.current_section)
             self.deck.append(entry)
 
 
@@ -65,9 +61,7 @@ class ApprenticeDeckReader(PatternDeckReader):
     entry_pattern = re.compile(r"^(\d+) (.*?)(\|.*)?$", re.M)
 
     def can_read(self):
-        result = any(
-            line for line in self.deckfile if self.section_pattern.search(line)
-        )
+        result = any(line for line in self.deckfile if self.section_pattern.search(line))
         self.deckfile.seek(0)
         return result
 

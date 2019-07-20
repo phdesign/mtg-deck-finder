@@ -70,6 +70,4 @@ class MtgTop8Spider(scrapy.Spider):
 
     def _safename(self, filename):
         keepcharacters = (" ", ".", "_")
-        return "".join(
-            c for c in filename if c.isalnum() or c in keepcharacters
-        ).rstrip()
+        return "".join(c for c in filename if c.isalnum() or c in keepcharacters).rstrip()

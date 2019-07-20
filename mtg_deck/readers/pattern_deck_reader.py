@@ -9,7 +9,7 @@ class PatternDeckReader(DeckReaderBase):
 
     def __init__(self, deck_str, name):
         self.deck_str = deck_str
-        self.deck = Deck(name)
+        self.deck = Deck(name=name)
         self.current_section = None
 
     @abstractmethod

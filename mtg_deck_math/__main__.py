@@ -4,6 +4,7 @@ import collections
 from mtg_deck.deck_reader import DeckReader
 from .config import Config
 
+
 def main():
     config = Config()
 
@@ -18,5 +19,6 @@ def main():
     print(first)
     print(second)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

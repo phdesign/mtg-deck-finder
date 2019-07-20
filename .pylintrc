@@ -11,7 +11,8 @@
 # --disable=W".
 disable=missing-docstring,
         too-few-public-methods,
-        no-self-use
+        no-self-use,
+        too-many-arguments
 
 
 [BASIC]

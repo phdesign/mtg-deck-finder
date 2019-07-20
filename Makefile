@@ -23,6 +23,7 @@ init:
 
 lint:
 	@source $(VENV_ACTIVATE); \
+	black **/*.py
 	pylint --exit-zero -f colorized **/*.py
 
 test: lint

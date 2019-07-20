@@ -69,6 +69,19 @@ Count,Tradelist Count,Name,Edition,Card Number,Condition,Language,Foil,Signed,Ar
 2,0,Act of Treason,Khans of Tarkir,95,Near Mint,English,,,,,,,,0
 1,0,Adamant Will,Dominaria,2,Near Mint,English,,,,,,,,"""
 
+CSV_OUTPUT = """\
+Count,Name,Edition,Card Number,Section
+2,Abomination of Gudul,Khans of Tarkir,159,main
+2,Abzan Banner,Khans of Tarkir,215,main
+1,Abzan Falconer,Khans of Tarkir,2,main
+2,Academy Drake,Dominaria,40,main
+3,Academy Journeymage,Dominaria,41,main
+1,Accumulated Knowledge,Masters 25,40,main
+1,Acid-Spewer Dragon,Dragons of Tarkir,86,main
+2,Act of Treason,Khans of Tarkir,95,main
+1,Adamant Will,Dominaria,2,main
+"""
+
 MTGTOP8_DECK = """\
 4 Broken Ambitions
 4 Reflecting Pool

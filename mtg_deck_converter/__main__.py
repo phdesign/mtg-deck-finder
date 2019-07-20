@@ -6,11 +6,10 @@ from .config import Config
 def main():
     config = Config()
 
-    deck_str = config.deck.read()
+    deck = DeckReader(config.deck, config.deck.name).read()
     config.deck.close()
-
-    deck = DeckReader(deck_str, config.deck.name).read()
     CsvDeckWriter(config.outfile).write(deck)
+    config.outfile.close()
 
 
 if __name__ == "__main__":

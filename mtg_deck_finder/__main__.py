@@ -6,13 +6,10 @@ from .config import Config
 def main():
     config = Config()
 
-    deck_str = config.deck.read()
-    inventory_str = config.inventory.read()
+    deck = DeckReader(config.deck, config.deck.name).read()
+    inventory = DeckReader(config.inventory).read()
     config.deck.close()
     config.inventory.close()
-
-    deck = DeckReader(deck_str, config.deck.name).read()
-    inventory = DeckReader(inventory_str).read()
 
     normalised_deck = deck.without_sideboard().normalise()
     normalised_inventory = inventory.normalise()

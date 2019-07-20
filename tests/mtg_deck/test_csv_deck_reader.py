@@ -1,11 +1,12 @@
 import json
+from io import StringIO
 from mtg_deck.readers.csv_deck_reader import CsvDeckReader
 from mtg_deck.deck_reader import DeckReader
 from .fixtures import CSV_DECK, MTGTOP8_DECK
 
 class TestCsvDeckReader:
     def test_should_read_all_cards_given_valid_csv(self):
-        deck = DeckReader(CSV_DECK, "sample").read()
+        deck = DeckReader(StringIO(CSV_DECK), "sample").read()
         assert json.dumps(deck.to_json()) == json.dumps({
             'name': "sample",
             'cards': [
@@ -22,9 +23,9 @@ class TestCsvDeckReader:
         })
 
     def test_should_be_able_to_read_given_valid_csv(self):
-        can_read = CsvDeckReader(CSV_DECK, "sample").can_read()
+        can_read = CsvDeckReader(StringIO(CSV_DECK), "sample").can_read()
         assert can_read
 
     def test_should_not_be_able_to_read_given_invalid_csv(self):
-        can_read = CsvDeckReader(MTGTOP8_DECK, "sample").can_read()
+        can_read = CsvDeckReader(StringIO(MTGTOP8_DECK), "sample").can_read()
         assert not can_read

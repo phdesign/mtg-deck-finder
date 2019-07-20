@@ -7,8 +7,8 @@ class PatternDeckReader(DeckReaderBase):
     section_pattern = None
     entry_pattern = None
 
-    def __init__(self, deck_str, name):
-        self.deck_str = deck_str
+    def __init__(self, deckfile, name):
+        self.deckfile = deckfile
         self.deck = Deck(name=name)
         self.current_section = None
 
@@ -17,7 +17,7 @@ class PatternDeckReader(DeckReaderBase):
         pass
 
     def read(self):
-        for line in self.deck_str.splitlines():
+        for line in self.deckfile.readlines():
             self._read_line(line)
         return self.deck
 
@@ -52,14 +52,18 @@ class SimpleDeckReader(PatternDeckReader):
         self.current_section = 'main'
 
     def can_read(self):
-        return self.entry_pattern.search(self.deck_str) is not None
+        result = any(line for line in self.deckfile if self.entry_pattern.search(line))
+        self.deckfile.seek(0)
+        return result
 
 class ApprenticeDeckReader(PatternDeckReader):
     section_pattern = re.compile(r"^\[(.+)\]$", re.M)
     entry_pattern = re.compile(r"^(\d+) (.*?)(\|.*)?$", re.M)
 
     def can_read(self):
-        return self.section_pattern.search(self.deck_str) is not None
+        result = any(line for line in self.deckfile if self.section_pattern.search(line))
+        self.deckfile.seek(0)
+        return result
 
     def _read_line(self, line):
         if self._read_section(line):
@@ -75,7 +79,9 @@ class ArenaDeckReader(PatternDeckReader):
         self.current_section = 'main'
 
     def can_read(self):
-        return self.entry_pattern.search(self.deck_str) is not None
+        result = any(line for line in self.deckfile if self.entry_pattern.search(line))
+        self.deckfile.seek(0)
+        return result
 
     def _read_card(self, line):
         match = self.entry_pattern.search(line)

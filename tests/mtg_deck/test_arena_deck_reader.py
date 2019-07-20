@@ -1,11 +1,12 @@
 import json
+from io import StringIO
 from mtg_deck.deck_reader import DeckReader
 from .fixtures import ARENA_DECK
 
 class TestArenaDeckReader:
 
     def test_should_read_all_cards(self):
-        deck = DeckReader(ARENA_DECK, "sample").read()
+        deck = DeckReader(StringIO(ARENA_DECK), "sample").read()
         assert json.dumps(deck.to_json()) == json.dumps({
             'name': "sample",
             'cards': [

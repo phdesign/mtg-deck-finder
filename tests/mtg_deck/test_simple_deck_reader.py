@@ -1,11 +1,12 @@
 import json
+from io import StringIO
 from mtg_deck.deck_reader import DeckReader
 from .fixtures import MTGTOP8_DECK
 
 class TestSimpleDeckReader:
-    
+
     def test_should_read_all_cards(self):
-        deck = DeckReader(MTGTOP8_DECK, "sample").read()
+        deck = DeckReader(StringIO(MTGTOP8_DECK), "sample").read()
         assert json.dumps(deck.to_json()) == json.dumps({
             'name': "sample",
             'cards': [
@@ -40,7 +41,7 @@ class TestSimpleDeckReader:
         })
 
     def test_should_read_main_cards_only_when_sideboard_excluded(self):
-        deck = DeckReader(MTGTOP8_DECK, "sample").read().without_sideboard()
+        deck = DeckReader(StringIO(MTGTOP8_DECK), "sample").read().without_sideboard()
         assert json.dumps(deck.to_json()) == json.dumps({
             'name': "sample",
             'cards': [

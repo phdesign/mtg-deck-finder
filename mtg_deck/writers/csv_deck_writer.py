@@ -1,3 +1,4 @@
+import os
 import csv
 
 class CsvDeckWriter():
@@ -6,7 +7,7 @@ class CsvDeckWriter():
 
     def write(self, deck):
         fieldnames = ['Count', 'Name', 'Edition', 'Card Number', 'Section']
-        writer = csv.writer(self.outfile, lineterminator="\n")
+        writer = csv.writer(self.outfile, lineterminator=os.linesep)
 
         writer.writerow(fieldnames)
         writer.writerows([

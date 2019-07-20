@@ -1,11 +1,12 @@
 import json
+from io import StringIO
 from mtg_deck.deck_reader import DeckReader
 from .fixtures import APPRENTICE_DECK
 
 class TestApprenticeDeckReader:
 
     def test_should_read_all_cards(self):
-        deck = DeckReader(APPRENTICE_DECK, "sample").read()
+        deck = DeckReader(StringIO(APPRENTICE_DECK), "sample").read()
         assert json.dumps(deck.to_json()) == json.dumps({
             'name': "sample",
             'cards': [
@@ -35,7 +36,7 @@ class TestApprenticeDeckReader:
         })
 
     def test_should_read_main_cards_only_when_sideboard_excluded(self):
-        deck = DeckReader(APPRENTICE_DECK, "sample").read().without_sideboard()
+        deck = DeckReader(StringIO(APPRENTICE_DECK), "sample").read().without_sideboard()
         assert json.dumps(deck.to_json()) == json.dumps({
             'name': "sample",
             'cards': [

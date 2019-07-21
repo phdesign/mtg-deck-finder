@@ -13,6 +13,7 @@ class Config:
     NO_SIDEBOARD = "no-sideboard"
     STRIP_META = "strip-meta"
     SUBTRACT = "subtract"
+    SORT = "sort"
 
     JSON = "json"
     CSV = "csv"
@@ -27,7 +28,7 @@ class Config:
 
         parser.add_argument(
             "operation",
-            choices=[self.ADD, self.CAT, self.NORMALISE, self.NO_SIDEBOARD, self.STRIP_META, self.SUBTRACT],
+            choices=[self.ADD, self.CAT, self.NORMALISE, self.NO_SIDEBOARD, self.STRIP_META, self.SUBTRACT, self.SORT],
             default=None,
             help="operation to perform",
         )

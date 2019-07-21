@@ -46,7 +46,7 @@ class PatternDeckReader(DeckReaderBase):
 
 
 class SimpleDeckReader(PatternDeckReader):
-    section_pattern = re.compile(r"^([A-Za-z]+)$", re.M)
+    section_pattern = re.compile(r"^(?://)?([A-Za-z]+)$", re.M)
     entry_pattern = re.compile(r"^(\d+) (.+)$", re.M)
 
     def __init__(self, deck_str, name):

@@ -134,3 +134,35 @@ class TestDeck:
                 "cards": [{"count": 2, "name": "Act of Treason", "edition": None, "number": None, "section": None}],
             }
         )
+
+    def test_subtract_should_not_insert_additional_items(self):
+        deck = Deck([DeckEntry(count=3, name="Act of Treason")], name="sample")
+        other = Deck(
+            [DeckEntry(count=2, name="Abzan Banner"), DeckEntry(count=1, name="Act of Treason")], name="sample2"
+        )
+
+        result = deck.subtract(other)
+
+        assert json.dumps(result.to_json()) == json.dumps(
+            {
+                "name": "sample",
+                "cards": [{"count": 2, "name": "Act of Treason", "edition": None, "number": None, "section": None}],
+            }
+        )
+
+    def test_subtract_should_normalise_first(self):
+        deck = Deck(
+            [DeckEntry(count=3, name="Act of Treason"), DeckEntry(count=1, name="Act of Treason")], name="sample"
+        )
+        other = Deck(
+            [DeckEntry(count=2, name="Abzan Banner"), DeckEntry(count=1, name="Act of Treason")], name="sample2"
+        )
+
+        result = deck.subtract(other)
+
+        assert json.dumps(result.to_json()) == json.dumps(
+            {
+                "name": "sample",
+                "cards": [{"count": 3, "name": "Act of Treason", "edition": None, "number": None, "section": None}],
+            }
+        )

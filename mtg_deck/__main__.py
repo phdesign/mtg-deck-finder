@@ -28,6 +28,9 @@ def main():
     elif config.operation == config.STRIP_META:
         result = result.exclude_metadata()
 
+    elif config.operation == config.SORT:
+        result.sort()
+
     if config.output_format == config.CSV:
         CsvDeckWriter(config.outfile).write(result)
     elif config.output_format == config.JSON:

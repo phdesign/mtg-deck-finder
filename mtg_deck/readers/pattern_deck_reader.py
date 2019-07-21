@@ -1,6 +1,7 @@
 import re
 from abc import abstractmethod
 from ..deck import Deck, DeckEntry
+from ..editions import EDITIONS
 from .deck_reader_base import DeckReaderBase
 
 
@@ -95,8 +96,11 @@ class ArenaDeckReader(PatternDeckReader):
             entry = DeckEntry(
                 count=int(match.group(1)),
                 name=match.group(2),
-                edition=match.group(3),
+                edition=self._map_edition(match.group(3)),
                 number=int(match.group(4)),
                 section=self.current_section,
             )
             self.deck.append(entry)
+
+    def _map_edition(self, code):
+        return EDITIONS.get(code, code)

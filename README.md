@@ -17,7 +17,7 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  -o {table,json,percent}, --output-format {table,json,percent}
+  -f {table,json,percent}, --output-format {table,json,percent}
                         output format, "table", "json" or "percent"
   -i INVENTORY, --inventory INVENTORY
                         inventory file of mtg cards available
@@ -34,13 +34,13 @@ python -m mtg_deck_finder -i deck.dec -o json inventory.txt
 Process a folder of decks
 
 ```
-find decks -iname *.dck -print -exec python3 -m mtg_deck_finder -i decks/inventory.txt -o percent "{}" \;
+find decks -iname *.dck -print -exec python3 -m mtg_deck_finder -i decks/inventory.txt -f percent "{}" \;
 ```
 
 One result per line
 
 ```
-find decks -iname '*.txt' -print -exec python3 -m mtg_deck_finder -i decks/inventory.txt -o percent "{}" \; | sed 'N;s/\(.*\)\n\(.*\)/\2 \1/'
+find decks -iname '*.txt' -print -exec python3 -m mtg_deck_finder -i decks/inventory.txt -f percent "{}" \; | sed 'N;s/\(.*\)\n\(.*\)/\2 \1/'
 ```
 
 Order by similarity

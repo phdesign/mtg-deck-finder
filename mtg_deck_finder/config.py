@@ -20,7 +20,7 @@ class Config:
             prog=PACKAGE_NAME,
         )
         parser.add_argument(
-            "-o",
+            "-f",
             "--output-format",
             default=self.FORMAT_TABLE,
             choices=[self.FORMAT_TABLE, self.FORMAT_JSON, self.FORMAT_PERCENT],

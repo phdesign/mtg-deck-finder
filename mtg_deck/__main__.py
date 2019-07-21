@@ -1,3 +1,5 @@
+import os
+import json
 from .deck_reader import DeckReader
 from .writers.csv_deck_writer import CsvDeckWriter
 from .config import Config
@@ -26,7 +28,14 @@ def main():
     elif config.operation == config.STRIP_META:
         result = result.exclude_metadata()
 
-    CsvDeckWriter(config.outfile).write(result)
+    if config.output_format == config.CSV:
+        CsvDeckWriter(config.outfile).write(result)
+    elif config.output_format == config.JSON:
+        json_deck = json.dumps(result.to_json(), indent=4)
+        config.outfile.write(json_deck)
+    elif config.output_format == config.COUNT:
+        total_count = sum(x.count for x in result)
+        config.outfile.write(str(total_count) + os.linesep)
     config.outfile.close()
 
 

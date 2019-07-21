@@ -55,6 +55,7 @@ ARENA_DECK = """\
 2 Vampire Sovereign (M19) 125
 1 Verdant Sun's Avatar (XLN) 213
 1 Vigilant Baloth (M19) 206
+
 1 Walking Corpse (M20) 327"""
 
 CSV_DECK = """\

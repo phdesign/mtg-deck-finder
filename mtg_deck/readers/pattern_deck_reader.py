@@ -85,6 +85,11 @@ class ArenaDeckReader(PatternDeckReader):
         return result
 
     def _read_card(self, line):
+        # A blank line after some entries indicates the sideboard
+        if line.strip() == "" and any(self.deck):
+            self.current_section = "sideboard"
+            return
+
         match = self.entry_pattern.search(line)
         if match:
             entry = DeckEntry(

@@ -36,7 +36,7 @@ class TestArenaDeckReader:
                     {"count": 2, "name": "Vampire Sovereign", "edition": "M19", "number": 125, "section": "main"},
                     {"count": 1, "name": "Verdant Sun's Avatar", "edition": "XLN", "number": 213, "section": "main"},
                     {"count": 1, "name": "Vigilant Baloth", "edition": "M19", "number": 206, "section": "main"},
-                    {"count": 1, "name": "Walking Corpse", "edition": "M20", "number": 327, "section": "main"},
+                    {"count": 1, "name": "Walking Corpse", "edition": "M20", "number": 327, "section": "sideboard"},
                 ],
             }
         )

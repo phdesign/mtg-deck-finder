@@ -1,8 +1,9 @@
 import sys
 import argparse
+from pkg_resources import get_distribution
 
-PACKAGE_NAME = "mtg_deck_finder"
-VERSION = "0.0.1"
+__pkg_name__ = __name__.partition(".")[0].replace('_', '-')
+__version__ = get_distribution('mtg-deck').version
 
 
 class Config:
@@ -17,7 +18,7 @@ class Config:
         self._args = None
         parser = argparse.ArgumentParser(
             description="attempts to find magic the gathering decks that can be built from an inventory",
-            prog=PACKAGE_NAME,
+            prog=__pkg_name__,
         )
         parser.add_argument(
             "-f",
@@ -40,6 +41,7 @@ class Config:
             default=sys.stdin,
             help="deck to compare against inventory",
         )
+        parser.add_argument('--version', action='version', version='%(prog)s ' + __version__)
         self._args = parser.parse_args()
 
         # Check that we're not waiting on the user to provide stdin input

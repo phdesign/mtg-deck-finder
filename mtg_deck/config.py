@@ -1,8 +1,9 @@
 import sys
 import argparse
+from pkg_resources import get_distribution
 
-PACKAGE_NAME = "mtg_deck"
-VERSION = "0.0.1"
+__pkg_name__ = __name__.partition(".")[0].replace('_', '-')
+__version__ = get_distribution('mtg-deck').version
 
 
 class Config:
@@ -22,7 +23,7 @@ class Config:
 
     def __init__(self):
         self._args = None
-        parser = argparse.ArgumentParser(description="performs magic deck operations", prog=PACKAGE_NAME)
+        parser = argparse.ArgumentParser(description="performs magic deck operations", prog=__pkg_name__)
 
         parser.add_argument(
             "operation",
@@ -40,6 +41,7 @@ class Config:
         parser.add_argument("-o", "--outfile", type=argparse.FileType("w"), default=sys.stdout)
         parser.add_argument("deck", nargs="?", type=argparse.FileType("r", errors="ignore"), default=sys.stdin)
         parser.add_argument("other", nargs="?", type=argparse.FileType("r", errors="ignore"))
+        parser.add_argument('--version', action='version', version='%(prog)s ' + __version__)
         self._args = parser.parse_args()
 
         # Check that we're not waiting on the user to provide stdin input

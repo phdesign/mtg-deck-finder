@@ -103,9 +103,9 @@ class TestDeck:
         )
 
     def test_subtract_should_subtract_counts_by_name(self):
-        deck = Deck([DeckEntry(count=1, name="Abzan Banner"), DeckEntry(count=3, name="Act of Treason")], name="sample")
+        deck = Deck([DeckEntry(count=3, name="Abzan Banner"), DeckEntry(count=2, name="Act of Treason")], name="sample")
         other = Deck(
-            [DeckEntry(count=2, name="Abzan Banner"), DeckEntry(count=2, name="Act of Treason")], name="sample2"
+            [DeckEntry(count=1, name="Abzan Banner"), DeckEntry(count=1, name="Act of Treason")], name="sample2"
         )
 
         result = deck.subtract(other)
@@ -114,8 +114,23 @@ class TestDeck:
             {
                 "name": "sample",
                 "cards": [
-                    {"count": -1, "name": "Abzan Banner", "edition": None, "number": None, "section": None},
+                    {"count": 2, "name": "Abzan Banner", "edition": None, "number": None, "section": None},
                     {"count": 1, "name": "Act of Treason", "edition": None, "number": None, "section": None},
                 ],
+            }
+        )
+
+    def test_subtract_should_remove_items_with_zero_count(self):
+        deck = Deck([DeckEntry(count=2, name="Abzan Banner"), DeckEntry(count=3, name="Act of Treason")], name="sample")
+        other = Deck(
+            [DeckEntry(count=2, name="Abzan Banner"), DeckEntry(count=1, name="Act of Treason")], name="sample2"
+        )
+
+        result = deck.subtract(other)
+
+        assert json.dumps(result.to_json()) == json.dumps(
+            {
+                "name": "sample",
+                "cards": [{"count": 2, "name": "Act of Treason", "edition": None, "number": None, "section": None}],
             }
         )

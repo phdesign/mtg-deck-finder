@@ -8,8 +8,12 @@ def group(deck, name, countfunc):
     cards = sorted(deck, key=keyfunc)
     return Deck(
         (
-            DeckEntry(count=countfunc(group), name=key[0], edition=key[2], number=key[4], section=key[6])
-            for key, group in groupby(cards, keyfunc)
+            x
+            for x in (
+                DeckEntry(count=countfunc(group), name=key[0], edition=key[2], number=key[4], section=key[6])
+                for key, group in groupby(cards, keyfunc)
+            )
+            if x.count > 0
         ),
         name=name,
     )

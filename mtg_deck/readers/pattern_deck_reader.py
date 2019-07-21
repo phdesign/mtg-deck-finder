@@ -11,8 +11,8 @@ class PatternDeckReader(DeckReaderBase):
     section_pattern = None
     entry_pattern = None
 
-    def __init__(self, deckfile, name):
-        self.deckfile = deckfile
+    def __init__(self, readlines, name):
+        self.readlines = readlines
         self.deck = Deck(name=name)
         self.current_section = None
 
@@ -21,7 +21,7 @@ class PatternDeckReader(DeckReaderBase):
         pass
 
     def read(self):
-        for line in self.deckfile.readlines():
+        for line in self.readlines:
             self._read_line(line)
         return self.deck
 
@@ -54,13 +54,12 @@ class SimpleDeckReader(PatternDeckReader):
         self.current_section = "main"
 
     def can_read(self):
-        result = False
-        for _ in range(LINES_TO_SNIFF):
-            if self.entry_pattern.search(self.deckfile.readline()):
-                result = True
-                break
-        self.deckfile.seek(0)
-        return result
+        for i, line in enumerate(self.readlines):
+            if i > LINES_TO_SNIFF:
+                return False
+            if self.entry_pattern.search(line):
+                return True
+        return False
 
 
 class ApprenticeDeckReader(PatternDeckReader):
@@ -68,13 +67,12 @@ class ApprenticeDeckReader(PatternDeckReader):
     entry_pattern = re.compile(r"^(\d+) (.*?)(\|.*)?$", re.M)
 
     def can_read(self):
-        result = False
-        for _ in range(LINES_TO_SNIFF):
-            if self.section_pattern.search(self.deckfile.readline()):
-                result = True
-                break
-        self.deckfile.seek(0)
-        return result
+        for i, line in enumerate(self.readlines):
+            if i > LINES_TO_SNIFF:
+                return False
+            if self.section_pattern.search(line):
+                return True
+        return False
 
     def _read_line(self, line):
         if self._read_section(line):
@@ -91,13 +89,12 @@ class ArenaDeckReader(PatternDeckReader):
         self.current_section = "main"
 
     def can_read(self):
-        result = False
-        for _ in range(LINES_TO_SNIFF):
-            if self.entry_pattern.search(self.deckfile.readline()):
-                result = True
-                break
-        self.deckfile.seek(0)
-        return result
+        for i, line in enumerate(self.readlines):
+            if i > LINES_TO_SNIFF:
+                return False
+            if self.entry_pattern.search(line):
+                return True
+        return False
 
     def _read_card(self, line):
         # A blank line after some entries indicates the sideboard

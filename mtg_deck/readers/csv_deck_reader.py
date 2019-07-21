@@ -1,3 +1,4 @@
+import os
 from csv import Sniffer, DictReader, Error
 from ..deck import Deck, DeckEntry
 from .deck_reader_base import DeckReaderBase
@@ -13,21 +14,20 @@ def _try_int(val):
 
 
 class CsvDeckReader(DeckReaderBase):
-    def __init__(self, deckfile, name):
-        self.deckfile = deckfile
+    def __init__(self, readlines, name):
+        self.readlines = readlines
         self.name = name
         self.deck = None
 
     def can_read(self):
         try:
-            Sniffer().sniff(self.deckfile.read(128), delimiters=[","])
-            self.deckfile.seek(0)
+            Sniffer().sniff(os.linesep.join(self.readlines[:3]), delimiters=[","])
             return True
         except Error:
             return False
 
     def read(self):
-        csv_reader = DictReader(self.deckfile, delimiter=",")
+        csv_reader = DictReader(self.readlines, delimiter=",")
         self.deck = Deck(
             (
                 DeckEntry(

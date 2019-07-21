@@ -2,8 +2,8 @@ import sys
 import argparse
 from pkg_resources import get_distribution
 
-__pkg_name__ = __name__.partition(".")[0].replace('_', '-')
-__version__ = get_distribution('mtg-deck').version
+__pkg_name__ = __name__.partition(".")[0].replace("_", "-")
+__version__ = get_distribution("mtg-deck").version
 
 
 class Config:
@@ -41,7 +41,7 @@ class Config:
             default=sys.stdin,
             help="deck to compare against inventory",
         )
-        parser.add_argument('--version', action='version', version='%(prog)s ' + __version__)
+        parser.add_argument("--version", action="version", version="%(prog)s " + __version__)
         self._args = parser.parse_args()
 
         # Check that we're not waiting on the user to provide stdin input

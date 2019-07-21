@@ -2,8 +2,8 @@ import sys
 import argparse
 from pkg_resources import get_distribution
 
-__pkg_name__ = __name__.partition(".")[0].replace('_', '-')
-__version__ = get_distribution('mtg-deck').version
+__pkg_name__ = __name__.partition(".")[0].replace("_", "-")
+__version__ = get_distribution("mtg-deck").version
 
 
 class Config:
@@ -32,16 +32,12 @@ class Config:
             help="operation to perform",
         )
         parser.add_argument(
-            "-f",
-            "--output-format",
-            default=self.CSV,
-            choices=[self.CSV, self.JSON, self.COUNT],
-            help='output format',
+            "-f", "--output-format", default=self.CSV, choices=[self.CSV, self.JSON, self.COUNT], help="output format"
         )
         parser.add_argument("-o", "--outfile", type=argparse.FileType("w"), default=sys.stdout)
         parser.add_argument("deck", nargs="?", type=argparse.FileType("r", errors="ignore"), default=sys.stdin)
         parser.add_argument("other", nargs="?", type=argparse.FileType("r", errors="ignore"))
-        parser.add_argument('--version', action='version', version='%(prog)s ' + __version__)
+        parser.add_argument("--version", action="version", version="%(prog)s " + __version__)
         self._args = parser.parse_args()
 
         # Check that we're not waiting on the user to provide stdin input

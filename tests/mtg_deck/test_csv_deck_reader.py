@@ -68,9 +68,9 @@ class TestCsvDeckReader:
         )
 
     def test_should_be_able_to_read_given_valid_csv(self):
-        can_read = CsvDeckReader(StringIO(CSV_DECK), "sample").can_read()
+        can_read = CsvDeckReader(CSV_DECK.splitlines(), "sample").can_read()
         assert can_read
 
     def test_should_not_be_able_to_read_given_invalid_csv(self):
-        can_read = CsvDeckReader(StringIO(MTGTOP8_DECK), "sample").can_read()
+        can_read = CsvDeckReader(MTGTOP8_DECK.splitlines(), "sample").can_read()
         assert not can_read

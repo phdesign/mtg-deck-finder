@@ -16,21 +16,17 @@ from setuptools import setup, find_packages
 VERSION = "0.3"
 
 setup(
-    name='mtg-deck',
+    name="mtg-deck",
     version=VERSION,
-    description='Magic The Gathering deck operations',
-    author='Paul Heasley',
-    author_email='paul@phdesign.com.au',
+    description="Magic The Gathering deck operations",
+    author="Paul Heasley",
+    author_email="paul@phdesign.com.au",
     packages=find_packages(exclude=("tests",)),
     entry_points={
-        'console_scripts': [
-            'mtg-deck=mtg_deck.__main__:main',
-            'mtg-deck-finder=mtg_deck_finder.__main__:main'
-        ],
+        "console_scripts": ["mtg-deck=mtg_deck.__main__:main", "mtg-deck-finder=mtg_deck_finder.__main__:main"]
     },
     include_package_data=True,
-    license='MIT',
-    install_requires=[
-    ],
-    zip_safe=True
+    license="MIT",
+    install_requires=[],
+    zip_safe=True,
 )

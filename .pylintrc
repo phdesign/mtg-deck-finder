@@ -21,7 +21,8 @@ disable=missing-docstring,
 # Good variable names which should always be accepted, separated by a comma.
 good-names=f,
            fn,
-           ex
+           ex,
+           i
 
 
 [REPORTS]

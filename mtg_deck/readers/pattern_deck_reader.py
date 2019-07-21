@@ -4,6 +4,8 @@ from ..deck import Deck, DeckEntry
 from ..editions import EDITIONS
 from .deck_reader_base import DeckReaderBase
 
+LINES_TO_SNIFF = 20
+
 
 class PatternDeckReader(DeckReaderBase):
     section_pattern = None
@@ -52,7 +54,11 @@ class SimpleDeckReader(PatternDeckReader):
         self.current_section = "main"
 
     def can_read(self):
-        result = any(line for line in self.deckfile if self.entry_pattern.search(line))
+        result = False
+        for _ in range(LINES_TO_SNIFF):
+            if self.entry_pattern.search(self.deckfile.readline()):
+                result = True
+                break
         self.deckfile.seek(0)
         return result
 
@@ -62,7 +68,11 @@ class ApprenticeDeckReader(PatternDeckReader):
     entry_pattern = re.compile(r"^(\d+) (.*?)(\|.*)?$", re.M)
 
     def can_read(self):
-        result = any(line for line in self.deckfile if self.section_pattern.search(line))
+        result = False
+        for _ in range(LINES_TO_SNIFF):
+            if self.section_pattern.search(self.deckfile.readline()):
+                result = True
+                break
         self.deckfile.seek(0)
         return result
 
@@ -74,14 +84,18 @@ class ApprenticeDeckReader(PatternDeckReader):
 
 
 class ArenaDeckReader(PatternDeckReader):
-    entry_pattern = re.compile(r"^(\d+) ([^(]+) \(([^)]+)\) (\d+)$", re.M)
+    entry_pattern = re.compile(r"^(\d+) ([^(]+) \(([A-Z0-9_]{3,15})\) (\d+)$", re.M)
 
     def __init__(self, deck_str, name):
         super().__init__(deck_str, name)
         self.current_section = "main"
 
     def can_read(self):
-        result = any(line for line in self.deckfile if self.entry_pattern.search(line))
+        result = False
+        for _ in range(LINES_TO_SNIFF):
+            if self.entry_pattern.search(self.deckfile.readline()):
+                result = True
+                break
         self.deckfile.seek(0)
         return result
 

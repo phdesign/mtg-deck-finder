@@ -31,9 +31,7 @@ class TappedOutSpider(scrapy.Spider):
     }
 
     def start_requests(self):
-        yield scrapy.Request(
-            url="http://tappedout.net/mtg-decks/search/", callback=self.parse
-        )
+        yield scrapy.Request(url="http://tappedout.net/mtg-decks/search/", callback=self.parse)
 
     def parse(self, response):
         for deck in response.css("h3.name a"):
@@ -67,6 +65,4 @@ class TappedOutSpider(scrapy.Spider):
 
     def _safename(self, filename):
         keepcharacters = (" ", ".", "_", "-")
-        return "".join(
-            c for c in filename if c.isalnum() or c in keepcharacters
-        ).rstrip()
+        return "".join(c for c in filename if c.isalnum() or c in keepcharacters).rstrip()

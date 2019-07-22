@@ -1,0 +1,2 @@
+class DeckFormatNotSupportedError(Exception):
+    pass

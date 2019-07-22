@@ -25,7 +25,7 @@ class Config:
         self._args = None
         parser = argparse.ArgumentParser(
             description="performs magic deck operations",
-            epilog="operations may be combined, order is preserved",
+            epilog="operations may be combined and transformations will be applied to both decks, order is preserved",
             prog=__pkg_name__,
         )
 
@@ -71,7 +71,9 @@ class Config:
             "-f", "--output-format", default=self.CSV, choices=[self.CSV, self.JSON, self.COUNT], help="output format"
         )
         parser.add_argument("-o", "--outfile", type=argparse.FileType("w"), default=sys.stdout)
-        parser.add_argument("deck", type=argparse.FileType("r", errors="ignore"), default=sys.stdin)
+        parser.add_argument(
+            "deck", type=argparse.FileType("r", errors="ignore"), default=sys.stdin, help="primary deck to operate on"
+        )
         parser.add_argument(
             "other",
             nargs="?",

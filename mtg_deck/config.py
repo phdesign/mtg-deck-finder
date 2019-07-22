@@ -23,7 +23,11 @@ class Config:
 
     def __init__(self):
         self._args = None
-        parser = argparse.ArgumentParser(description="performs magic deck operations", prog=__pkg_name__)
+        parser = argparse.ArgumentParser(
+            description="performs magic deck operations",
+            epilog="operations may be combined, order is preserved",
+            prog=__pkg_name__,
+        )
 
         parser.add_argument(
             "--add",

@@ -8,7 +8,6 @@ __version__ = get_distribution("mtg-deck").version
 
 class Config:
     ADD = "add"
-    CAT = "cat"
     NORMALISE = "normalise"
     NO_SIDEBOARD = "no-sideboard"
     STRIP_META = "strip-meta"
@@ -27,17 +26,54 @@ class Config:
         parser = argparse.ArgumentParser(description="performs magic deck operations", prog=__pkg_name__)
 
         parser.add_argument(
-            "operation",
-            choices=[self.ADD, self.CAT, self.NORMALISE, self.NO_SIDEBOARD, self.STRIP_META, self.SUBTRACT, self.SORT],
-            default=None,
-            help="operation to perform",
+            "--add",
+            dest="operations",
+            action="append_const",
+            const=self.ADD,
+            help="add decks together, combining the counts",
+        )
+        parser.add_argument(
+            "--normalise",
+            dest="operations",
+            action="append_const",
+            const=self.NORMALISE,
+            help="normalise a deck(s), combining any duplicate entries and summing the counts",
+        )
+        parser.add_argument(
+            "--no-sideboard",
+            dest="operations",
+            action="append_const",
+            const=self.NO_SIDEBOARD,
+            help="remove sideboard cards from the deck(s)",
+        )
+        parser.add_argument(
+            "--strip-meta",
+            dest="operations",
+            action="append_const",
+            const=self.STRIP_META,
+            help="remove metadata from the deck(s), retaining only count and name",
+        )
+        parser.add_argument(
+            "--subtract",
+            dest="operations",
+            action="append_const",
+            const=self.SUBTRACT,
+            help="subtract the decks, removing the cards in the second deck from the first",
+        )
+        parser.add_argument(
+            "--sort", dest="operations", action="append_const", const=self.SORT, help="sort the deck(s)"
         )
         parser.add_argument(
             "-f", "--output-format", default=self.CSV, choices=[self.CSV, self.JSON, self.COUNT], help="output format"
         )
         parser.add_argument("-o", "--outfile", type=argparse.FileType("w"), default=sys.stdout)
-        parser.add_argument("deck", nargs="?", type=argparse.FileType("r", errors="ignore"), default=sys.stdin)
-        parser.add_argument("other", nargs="?", type=argparse.FileType("r", errors="ignore"))
+        parser.add_argument("deck", type=argparse.FileType("r", errors="ignore"), default=sys.stdin)
+        parser.add_argument(
+            "other",
+            nargs="?",
+            type=argparse.FileType("r", errors="ignore"),
+            help="other deck for operations such as add, subtract",
+        )
         parser.add_argument("--version", action="version", version="%(prog)s " + __version__)
         self._args = parser.parse_args()
 

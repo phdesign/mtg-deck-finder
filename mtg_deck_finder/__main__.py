@@ -6,14 +6,12 @@ from .config import Config
 def main():
     config = Config()
 
-    deck = DeckReader(config.deck, config.deck.name).read()
-    inventory = DeckReader(config.inventory).read()
+    deck = DeckReader(config.deck, config.deck.name).read().exclude_metadata().normalise()
+    inventory = DeckReader(config.inventory).read().exclude_metadata().normalise()
     config.deck.close()
     config.inventory.close()
 
-    normalised_deck = deck.without_sideboard().normalise()
-    normalised_inventory = inventory.normalise()
-    comparison = compare.compare(normalised_deck, normalised_inventory)
+    comparison = compare.compare(deck, inventory)
 
     if config.output_format == config.FORMAT_TABLE:
         compare.print_table(comparison)

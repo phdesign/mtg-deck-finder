@@ -33,7 +33,8 @@ test: lint
 
 spider:
 	@source $(VENV_ACTIVATE); \
-	scrapy runspider deck_spider/mtgtop8.py -s JOBDIR=crawls/mtgtop8 -a folder=decks
+	scrapy runspider deck_spider/tappedout.py -s JOBDIR=crawls/tappedout -a folder=decks
+	#scrapy runspider deck_spider/mtgtop8.py -s JOBDIR=crawls/mtgtop8 -a folder=decks
 
 clean:
 	rm -rf .pytest_cache .venv

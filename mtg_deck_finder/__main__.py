@@ -11,7 +11,7 @@ def main():
     try:
         deck = DeckReader(config.deck, config.deck.name).read().exclude_metadata().normalise()
     except DeckFormatNotSupportedError:
-        print('deck format not supported: ' + config.deck.name, file=sys.stderr)
+        print("deck format not supported: " + config.deck.name, file=sys.stderr)
         exit(1)
     finally:
         config.deck.close()
@@ -19,7 +19,7 @@ def main():
     try:
         inventory = DeckReader(config.inventory).read().exclude_metadata().normalise()
     except DeckFormatNotSupportedError:
-        print('inventory deck format not supported', file=sys.stderr)
+        print("inventory deck format not supported", file=sys.stderr)
         exit(1)
     finally:
         config.inventory.close()

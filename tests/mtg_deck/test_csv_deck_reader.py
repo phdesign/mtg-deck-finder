@@ -1,7 +1,9 @@
 import json
 from io import StringIO
+import pytest
 from mtg_deck.readers.csv_deck_reader import CsvDeckReader
 from mtg_deck.deck_reader import DeckReader
+from mtg_deck.errors import DeckFormatNotSupportedError
 from .fixtures import CSV_DECK, MTGTOP8_DECK
 
 
@@ -74,3 +76,9 @@ class TestCsvDeckReader:
     def test_should_not_be_able_to_read_given_invalid_csv(self):
         can_read = CsvDeckReader(MTGTOP8_DECK.splitlines(), "sample").can_read()
         assert not can_read
+
+    def test_should_raise_error_given_invalid_csv(self):
+        deck_reader = CsvDeckReader(["one,two,three", "1,2,3"], "sample")
+        assert deck_reader.can_read()
+        with pytest.raises(DeckFormatNotSupportedError):
+            deck_reader.read()

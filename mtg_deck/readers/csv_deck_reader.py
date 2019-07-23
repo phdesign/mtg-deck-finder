@@ -2,6 +2,7 @@ import os
 import csv
 from ..deck import Deck, DeckEntry
 from .deck_reader_base import DeckReaderBase
+from ..errors import DeckFormatNotSupportedError
 
 
 def _try_int(val):
@@ -30,17 +31,20 @@ class CsvDeckReader(DeckReaderBase):
 
     def read(self):
         csv_reader = csv.DictReader(self.readlines, delimiter=",")
-        self.deck = Deck(
-            (
-                DeckEntry(
-                    count=int(row["Count"]),
-                    name=row["Name"],
-                    edition=row.get("Edition"),
-                    number=_try_int(row.get("Card Number")),
-                    section=row.get("Section", "main"),
-                )
-                for row in csv_reader
-            ),
-            name=self.name,
-        )
-        return self.deck
+        try:
+            self.deck = Deck(
+                (
+                    DeckEntry(
+                        count=int(row["Count"]),
+                        name=row["Name"],
+                        edition=row.get("Edition"),
+                        number=_try_int(row.get("Card Number")),
+                        section=row.get("Section", "main"),
+                    )
+                    for row in csv_reader
+                ),
+                name=self.name,
+            )
+            return self.deck
+        except (KeyError, ValueError):
+            raise DeckFormatNotSupportedError

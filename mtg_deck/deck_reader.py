@@ -2,6 +2,7 @@ from .readers.pattern_deck_reader import ArenaDeckReader, ApprenticeDeckReader, 
 from .readers.csv_deck_reader import CsvDeckReader
 from .errors import DeckFormatNotSupportedError
 
+
 class DeckReader:
     def __init__(self, deckfile, name=None):
         readers = [CsvDeckReader, ArenaDeckReader, ApprenticeDeckReader, SimpleDeckReader]

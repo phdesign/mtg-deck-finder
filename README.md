@@ -37,6 +37,12 @@ Process a folder of decks
 find decks -iname *.dck -print -exec python3 -m mtg_deck_finder -i decks/inventory.txt -f percent "{}" \;
 ```
 
+Without filter
+
+```
+find decks -print -exec mtg-deck-finder -i decks/inventory.txt -f percent "{}" \; > decks/results_no_filter.csv
+```
+
 One result per line
 
 ```
@@ -47,4 +53,15 @@ Order by similarity
 
 ```
 ag --nonumbers '^\d+' mtgtop8_result.txt | sort -r -n | head -n 10
+```
+
+Sort results from vim
+
+```
+# Delete failed files
+:g/\D$\n\D/d
+# Quote the filename
+:%s/\v^((decks)\@=.*)$/"\1"/g
+# Join lines with comma
+:%s/\v([a-zA-Z])"\n/\1", /g 
 ```

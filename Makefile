@@ -33,7 +33,9 @@ test: lint
 
 spider:
 	@source $(VENV_ACTIVATE); \
-	scrapy runspider deck_spider/tappedout.py -s JOBDIR=crawls/tappedout -a folder=decks
+	scrapy runspider deck_spider/wizards.py -s JOBDIR=crawls/wizards -a folder=decks
+	#scrapy runspider deck_spider/mtggoldfish.py -s JOBDIR=crawls/mtggoldfish -a folder=decks
+	#scrapy runspider deck_spider/tappedout.py -s JOBDIR=crawls/tappedout -a folder=decks
 	#scrapy runspider deck_spider/mtgtop8.py -s JOBDIR=crawls/mtgtop8 -a folder=decks
 
 clean:

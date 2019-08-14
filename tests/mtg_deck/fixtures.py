@@ -112,3 +112,32 @@ Sideboard
 2 Negate
 2 Sower of Temptation
 1 Final Revels"""
+
+WIZARDS_DECK_WITH_COMMA = """\
+4 Nissa, Who Shakes the World
+1 Teferi, Hero of Dominaria
+4 Teferi, Time Raveler
+2 Frilled Mystic
+4 Hydroid Krasis
+4 Llanowar Elves
+4 Paradise Druid
+2 Drawn from Dreams
+2 Entrancing Melody
+3 Mass Manipulation
+4 Growth Spiral
+2 Prison Realm
+4 Breeding Pool
+3 Forest
+3 Glacial Fortress
+4 Hallowed Fountain
+4 Hinterland Harbor
+4 Temple Garden
+2 Temple of Mystery
+
+3 Aether Gust
+2 Knight of Autumn
+2 Kraul Harpooner
+3 Negate
+1 Tamiyo, Collector of Tales
+3 Time Wipe
+1 Tolsimir, Friend to Wolves"""

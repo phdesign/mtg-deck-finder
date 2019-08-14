@@ -26,7 +26,7 @@ optional arguments:
 e.g.
 
 ```
-python -m mtg_deck_finder -i deck.dec -o json inventory.txt
+python -m mtg_deck_finder -i inventory.txt -f json deck.dec
 ```
 
 ## Examples

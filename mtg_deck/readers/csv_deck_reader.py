@@ -1,4 +1,3 @@
-import os
 import csv
 from ..deck import Deck, DeckEntry
 from .deck_reader_base import DeckReaderBase
@@ -15,7 +14,7 @@ def _try_int(val):
 
 
 class CsvDeckReader(DeckReaderBase):
-    FIELDNAMES = ["Count", "Name", "Edition", "Card Number", "Section"]
+    MANDATORY_FIELDNAMES = ["Count", "Name"]
 
     def __init__(self, readlines, name):
         self.readlines = readlines
@@ -24,8 +23,9 @@ class CsvDeckReader(DeckReaderBase):
 
     def can_read(self):
         try:
-            csv.Sniffer().sniff(os.linesep.join(self.readlines[:3]), delimiters=[","])
-            return True
+            csv_reader = csv.DictReader(self.readlines[:3], delimiter=",")
+            headers = csv_reader.fieldnames
+            return all(item in headers for item in CsvDeckReader.MANDATORY_FIELDNAMES)
         except csv.Error:
             return False
 

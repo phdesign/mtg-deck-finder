@@ -78,7 +78,7 @@ class TestCsvDeckReader:
         assert not can_read
 
     def test_should_raise_error_given_invalid_csv(self):
-        deck_reader = CsvDeckReader(["one,two,three", "1,2,3"], "sample")
+        deck_reader = CsvDeckReader(["Count,Name,Section", "banana,rama,3"], "sample")
         assert deck_reader.can_read()
         with pytest.raises(DeckFormatNotSupportedError):
             deck_reader.read()

@@ -11,9 +11,9 @@ class WizardsSpider(scrapy.Spider):
     name = "wizards"
 
     custom_settings = {
-        "EXTENSIONS": {"scrapy.extensions.closespider.CloseSpider": 500},
-        "CLOSESPIDER_PAGECOUNT": 10,
-        "CONCURRENT_REQUESTS": 1,
+        # "EXTENSIONS": {"scrapy.extensions.closespider.CloseSpider": 500},
+        # "CLOSESPIDER_PAGECOUNT": 10,
+        # "CONCURRENT_REQUESTS": 1,
         "DOWNLOAD_DELAY": 0.50,
         "DOWNLOADER_MIDDLEWARES": {
             "scrapy.downloadermiddlewares.useragent.UserAgentMiddleware": None,
